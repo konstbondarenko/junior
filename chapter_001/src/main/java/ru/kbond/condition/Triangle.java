@@ -41,7 +41,6 @@ public class Triangle {
 		double triangleArea = Math.abs((b.getX() - a.getX()) * (c.getY() - a.getY()) - (c.getX() - a.getX()) * (b.getY() - a.getY())) / 2;
 		if (triangleArea == 0) {
             System.out.println("Ошибка. Вершины совпадают или лежат на одной прямой.");
-            return 0;
         }
         return triangleArea;
 	}
