@@ -24,9 +24,7 @@ public class Paint {
             }
             h -= 1;
             c += 2;
-            if (h != 0) {
                 pirPain.append(System.getProperty("line.separator"));
-            }
         }
         return pirPain.toString();
     }
