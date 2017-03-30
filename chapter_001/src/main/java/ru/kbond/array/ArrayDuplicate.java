@@ -3,14 +3,14 @@ package ru.kbond.array;
 import java.util.Arrays;
 
 /**
- * Class ArrayDuplicate для удаления дубликата в массиве.
+ * Class ArrayDuplicate для удаления дубликатов в массиве.
  * @author kbondarenko
  * @since 31.03.2017
  * @version 1
  */
 public class ArrayDuplicate {
 	/**
-	 * Метод для поворота квадратного массива.
+	 * Метод для удаления дубликатов в массиве.
 	 * @param array принимаемый массив.
 	 * @return результат
 	 */
