@@ -15,12 +15,10 @@ public class ArrayDuplicate {
 	 * @return результат
 	 */
     public String[] remove(String[] array) {
-        int count = 0;
         int end = array.length - 1;
         for (int i = 0; i < end; i++) {
             for (int j = 1 + i; j < end + 1; j++) {
                 if (array[i].equals(array[j])) {
-                    count++;
                     String tmp = array[end];
                     array[end] = array[j];
                     array[j] = tmp;
@@ -29,6 +27,6 @@ public class ArrayDuplicate {
                 }
             }
         }
-        return Arrays.copyOf(array, array.length - count);
+        return Arrays.copyOf(array, array.length - end);
     }
 }
