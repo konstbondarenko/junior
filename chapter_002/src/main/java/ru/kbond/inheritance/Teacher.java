@@ -20,6 +20,6 @@ public class Teacher extends Profession {
 	 * @return - результат
 	 */
     public String teaches(Student student) {
-        return "Преподаватель " + this.getName() + " проводит лекцию для студентов " + student.getCourse() + " курса";
+    	return String.format("Преподаватель %s проводит лекцию для студентов %s курса", this.getName(), student.getCourse());
     }
 }
