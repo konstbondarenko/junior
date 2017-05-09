@@ -20,6 +20,6 @@ public class Doctor extends Profession {
 	 * @return - результат
 	 */
     public String research(Virus virus) {
-        return "Доктор " + this.getName() + " исследует вирус " + virus.getName();
+		return String.format("Доктор %s исследует вирус %s", this.getName(), virus.getName());
     }
 }
