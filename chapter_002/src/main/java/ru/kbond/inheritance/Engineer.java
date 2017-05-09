@@ -20,6 +20,6 @@ public class Engineer extends Profession {
 	 * @return - результат
 	 */
     public String development(Automobile automobile) {
-        return "Инженер " + this.getName() + " разрабатывает " + automobile.getDrawingTitleName();
+		return String.format("Инженер %s разрабатывает %s", this.getName(), automobile.getDrawingTitleName());
     }
 }
