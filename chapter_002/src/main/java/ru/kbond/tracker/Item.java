@@ -1,5 +1,7 @@
 package ru.kbond.tracker;
 
+import java.util.Arrays;
+
 /**
  * Class Item - класс для создания объектов типа item.
  * @author kbondarenko
@@ -46,6 +48,14 @@ public class Item {
         this.desc = desc;
         this.created = created;
         this.comments = comments;
+    }
+    /**
+     * Метод переопределяющий "toString".
+     * @return - результат.
+     */
+    @Override
+    public String toString() {
+        return "id: " + this.id + "; name: " + this.name + "; description: " + this.desc + "; date created: " + this.created + "; comments: " + Arrays.toString(this.comments);
     }
     /**
      * Setter.
