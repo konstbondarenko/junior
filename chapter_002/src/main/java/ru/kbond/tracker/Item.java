@@ -55,7 +55,11 @@ public class Item {
      */
     @Override
     public String toString() {
-        return "id: " + this.id + "; name: " + this.name + "; description: " + this.desc + "; date created: " + this.created + "; comments: " + Arrays.toString(this.comments);
+        return "id: " + this.id
+                + "; name: " + this.name
+                + "; description: " + this.desc
+                + "; date created: " + this.created
+                + "; comments: " + Arrays.toString(this.comments);
     }
     /**
      * Setter.
