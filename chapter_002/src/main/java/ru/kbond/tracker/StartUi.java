@@ -11,13 +11,64 @@ import java.util.Date;
  */
 public class StartUi {
     /**
+     * Поле хранящее ключ для меню.
+     * @param ADD - ключ для метода добавления.
+     */
+    private static final int ADD = 0;
+    /**
+     * Поле хранящее ключ для меню.
+     * @param SHOW_AL - ключ для метода показа всего списка.
+     */
+    private static final int SHOW_ALL = 1;
+    /**
+     * Поле хранящее ключ для меню.
+     * @param EDIT - ключ для метода замены.
+     */
+    private static final int EDIT = 2;
+    /**
+     * Поле хранящее ключ для меню.
+     * @param DELETE - ключ для метода удаления.
+     */
+    private static final int DELETE = 3;
+    /**
+     * Поле хранящее ключ для меню.
+     * @param FIND_BY_ID - ключ для метода поиска по id.
+     */
+    private static final int FIND_BY_ID = 4;
+    /**
+     * Поле хранящее ключ для меню.
+     * @param FIND_BY_NAME - ключ для метода поиска по имени.
+     */
+    private static final int FIND_BY_NAME = 5;
+    /**
+     * Поле хранящее ключ для меню.
+     * @param EXIT - ключ для выхода из приложения.
+     */
+    private static final int EXIT = 6;
+    /**
+     * Поле создающее объект для работы с пользовательскими данными.
+     * @param consoleInput - используется для ввода пользовательских данных из консоли.
+     */
+    private ConsoleInput consoleInput = new ConsoleInput();
+    /**
+     * Поле для взаимодействия с массивом.
+     * @param track - массив заявок.
+     */
+    private Tracker track = new Tracker();
+    /**
+     * Поле создающее дату.
+     * @param currentDate - дата на момент создания заявки.
+     */
+    private Date currentDate = new Date();
+    /**
+     * Поле создающее дату для заявки.
+     * @param time - дата на момент создания заявки переведённая в тип long.
+     */
+    private long time = currentDate.getTime();
+    /**
      * Метод реализующий меню.
      */
     public void init() {
-        ConsoleInput consoleInput = new ConsoleInput();
-        Tracker track = new Tracker();
-        Date currentDate = new Date();
-        long time = currentDate.getTime();
         String askForUser;
         int choiceMenu;
         do {
@@ -31,43 +82,79 @@ public class StartUi {
             askForUser = consoleInput.ask("Select menu number: ");
             choiceMenu = Integer.valueOf(askForUser);
             switch (choiceMenu) {
-                case 0:
-                    Item item1 = new Item(consoleInput.ask("Enter id : "),
-                            consoleInput.ask("Enter name : "),
-                            consoleInput.ask("Enter description : "),
-                            time,
-                            new String[] {consoleInput.ask("Enter comments : ")});
-                    track.add(item1);
-                    System.out.println("");
+                case ADD:
+                    addItem();
                     break;
-                case 1:
-                    System.out.println(Arrays.toString(track.findAll()));
-                    System.out.println("");
+                case SHOW_ALL:
+                    showAll();
                     break;
-                case 2:
-                    Item item2 = new Item(consoleInput.ask("Enter id : "),
-                            consoleInput.ask("Enter name : "),
-                            consoleInput.ask("Enter description : "),
-                            time,
-                            new String[] {consoleInput.ask("Enter comments : ")});
-                    track.update(item2);
-                    System.out.println("");
+                case EDIT:
+                    editItem();
                     break;
-                case 3:
-                    track.delete(consoleInput.ask("Enter id : "));
-                    System.out.println("");
+                case DELETE:
+                    deleteItem();
                     break;
-                case 4:
-                    System.out.println(track.findById(consoleInput.ask("Enter id : ")));
-                    System.out.println("");
+                case FIND_BY_ID:
+                    findById();
                     break;
-                case 5:
-                    System.out.println(Arrays.toString(track.findByName(consoleInput.ask("Enter name : "))));
-                    System.out.println("");
+                case FIND_BY_NAME:
+                    findByName();
                     break;
                 default:
             }
-        } while (choiceMenu != 6);
+        } while (choiceMenu != EXIT);
+    }
+    /**
+     * Метод добавляющий объект в массив.
+     */
+    public void addItem() {
+        Item item = new Item(consoleInput.ask("Enter id : "),
+                consoleInput.ask("Enter name : "),
+                consoleInput.ask("Enter description : "),
+                time,
+                new String[] {consoleInput.ask("Enter comments : ")});
+        track.add(item);
+        System.out.println("");
+    }
+    /**
+     * Метод показывающий список всех объектов.
+     */
+    public void showAll() {
+        System.out.println(Arrays.toString(track.findAll()));
+        System.out.println("");
+    }
+    /**
+     * Метод заменяющий объект в массиве.
+     */
+    public void editItem() {
+        Item itemUpdate = new Item(consoleInput.ask("Enter id : "),
+                consoleInput.ask("Enter name : "),
+                consoleInput.ask("Enter description : "),
+                time,
+                new String[] {consoleInput.ask("Enter comments : ")});
+        track.update(itemUpdate);
+        System.out.println("");
+    }
+    /**
+     * Метод удаляющий объект из массива.
+     */
+    public void deleteItem() {
+        track.delete(consoleInput.ask("Enter id : "));
+        System.out.println("");
+    }
+    /**
+     * Метод производящий поиск объекта по id.
+     */
+    public void findById() {
+        System.out.println(track.findById(consoleInput.ask("Enter id : ")));
+        System.out.println("");
+    }
+    /**
+     * Метод производящий поиск объекта по имени.
+     */
+    public void findByName() {
+        System.out.println(Arrays.toString(track.findByName(consoleInput.ask("Enter name : "))));
+        System.out.println("");
     }
     /**
      * Точка входа в программу.
