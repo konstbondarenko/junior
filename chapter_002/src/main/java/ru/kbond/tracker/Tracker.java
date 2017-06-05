@@ -30,16 +30,8 @@ public class Tracker {
      * @return результат.
      */
     public Item add(Item item) {
-        //item.setId(generateId());
         this.items[position++] = item;
         return item;
-    }
-    /**
-     * Метод для генерирования id при добавлении объекта в массив.
-     * @return результат.
-     */
-    String generateId() {
-        return String.valueOf(RN.nextInt(100));
     }
     /**
      * Метод для обновления элемента массива.
