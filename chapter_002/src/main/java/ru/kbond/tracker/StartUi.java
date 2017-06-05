@@ -46,15 +46,24 @@ public class StartUi {
      */
     private static final int EXIT = 6;
     /**
-     * Поле создающее объект для работы с пользовательскими данными.
-     * @param consoleInput - используется для ввода пользовательских данных из консоли.
+     * Поле для взаимодействия со способом ввода данных.
+     * @param input - массив заявок.
      */
-    private ConsoleInput consoleInput = new ConsoleInput();
+    private Input input;
     /**
      * Поле для взаимодействия с массивом.
      * @param track - массив заявок.
      */
-    private Tracker track = new Tracker();
+    private Tracker track;
+    /**
+     * Конструктор.
+     * @param input - принимаемый способ ввода данных.
+     * @param track - принимаемый массив.
+     */
+    public StartUi(Input input, Tracker track) {
+        this.input = input;
+        this.track = track;
+    }
     /**
      * Поле создающее дату.
      * @param currentDate - дата на момент создания заявки.
@@ -79,7 +88,7 @@ public class StartUi {
             System.out.println("4. Find item by Id");
             System.out.println("5. Find items by name");
             System.out.println("6. Exit Program");
-            askForUser = consoleInput.ask("Select menu number: ");
+            askForUser = this.input.ask("Select menu number: ");
             choiceMenu = Integer.valueOf(askForUser);
             switch (choiceMenu) {
                 case ADD:
@@ -108,52 +117,52 @@ public class StartUi {
      * Метод добавляющий объект в массив.
      */
     public void addItem() {
-        Item item = new Item(consoleInput.ask("Enter id : "),
-                consoleInput.ask("Enter name : "),
-                consoleInput.ask("Enter description : "),
+        Item item = new Item(this.input.ask("Enter id : "),
+                this.input.ask("Enter name : "),
+                this.input.ask("Enter description : "),
                 time,
-                new String[] {consoleInput.ask("Enter comments : ")});
-        track.add(item);
+                new String[] {this.input.ask("Enter comments : ")});
+        this.track.add(item);
         System.out.println("");
     }
     /**
      * Метод показывающий список всех объектов.
      */
     public void showAll() {
-        System.out.println(Arrays.toString(track.findAll()));
+        System.out.println(Arrays.toString(this.track.findAll()));
         System.out.println("");
     }
     /**
      * Метод заменяющий объект в массиве.
      */
     public void editItem() {
-        Item itemUpdate = new Item(consoleInput.ask("Enter id : "),
-                consoleInput.ask("Enter name : "),
-                consoleInput.ask("Enter description : "),
+        Item itemUpdate = new Item(this.input.ask("Enter id : "),
+                this.input.ask("Enter name : "),
+                this.input.ask("Enter description : "),
                 time,
-                new String[] {consoleInput.ask("Enter comments : ")});
-        track.update(itemUpdate);
+                new String[] {this.input.ask("Enter comments : ")});
+        this.track.update(itemUpdate);
         System.out.println("");
     }
     /**
      * Метод удаляющий объект из массива.
      */
     public void deleteItem() {
-        track.delete(consoleInput.ask("Enter id : "));
+        this.track.delete(this.input.ask("Enter id : "));
         System.out.println("");
     }
     /**
      * Метод производящий поиск объекта по id.
      */
     public void findById() {
-        System.out.println(track.findById(consoleInput.ask("Enter id : ")));
+        System.out.println(this.track.findById(this.input.ask("Enter id : ")));
         System.out.println("");
     }
     /**
      * Метод производящий поиск объекта по имени.
      */
     public void findByName() {
-        System.out.println(Arrays.toString(track.findByName(consoleInput.ask("Enter name : "))));
+        System.out.println(Arrays.toString(this.track.findByName(this.input.ask("Enter name : "))));
         System.out.println("");
     }
     /**
@@ -161,7 +170,7 @@ public class StartUi {
      * @param args - принимаемый аргумент.
      */
     public static void main(String[] args) {
-        StartUi ui = new StartUi();
+        StartUi ui = new StartUi(new ConsoleInput(), new Tracker());
         ui.init();
     }
 }
