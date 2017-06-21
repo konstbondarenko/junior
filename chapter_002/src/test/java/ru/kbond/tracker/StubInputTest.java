@@ -20,7 +20,7 @@ public class StubInputTest {
         Input input = new StubInput(new String[]{
                 "0",
                 "1", "testName", "desc", String.valueOf(new String[] {"0"}),
-                "6"});
+                "y"});
         new StartUi(input, tracker).init();
         assertThat(tracker.findAll()[0].getName(), is("testName"));
     }
@@ -33,10 +33,12 @@ public class StubInputTest {
         Input input = new StubInput(new String[]{
                 "0",
                 "1", "testNameFirst", "desc", String.valueOf(new String[] {"0"}),
+                "no",
                 "0",
                 "2", "testNameSecond", "desc", String.valueOf(new String[] {"0"}),
+                "no",
                 "1",
-                "6"
+                "y"
         });
         new StartUi(input, tracker).init();
         assertThat(tracker.findAll()[0].getName(), is("testNameFirst"));
@@ -51,9 +53,10 @@ public class StubInputTest {
         Input input = new StubInput(new String[]{
                 "0",
                 "1", "testNameFirst", "desc", String.valueOf(new String[] {"0"}),
+                "no",
                 "2",
                 "1", "testNameSecond", "desc", String.valueOf(new String[] {"0"}),
-                "6"
+                "y"
         });
         new StartUi(input, tracker).init();
         assertThat(tracker.findAll()[0].getName(), is("testNameSecond"));
@@ -67,11 +70,13 @@ public class StubInputTest {
         Input input = new StubInput(new String[]{
                 "0",
                 "1", "testNameFirst", "desc", String.valueOf(new String[] {"0"}),
+                "no",
                 "0",
                 "2", "testNameSecond", "desc", String.valueOf(new String[] {"0"}),
+                "no",
                 "3",
                 "1",
-                "6"
+                "y"
         });
         new StartUi(input, tracker).init();
         assertThat(tracker.findAll()[0].getName(), is("testNameSecond"));
@@ -87,7 +92,7 @@ public class StubInputTest {
                 "1", "testName", "desc", String.valueOf(new String[] {"0"}),
                 "4",
                 "1",
-                "6"
+                "y"
         });
         new StartUi(input, tracker).init();
         assertThat(tracker.findAll()[0].getId(), is("1"));
@@ -101,9 +106,10 @@ public class StubInputTest {
         Input input = new StubInput(new String[]{
                 "0",
                 "1", "testName", "desc", String.valueOf(new String[] {"0"}),
+                "no",
                 "5",
                 "testName",
-                "6"
+                "y"
         });
         new StartUi(input, tracker).init();
         assertThat(tracker.findAll()[0].getName(), is("testName"));
