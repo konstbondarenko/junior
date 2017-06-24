@@ -1,7 +1,5 @@
 package ru.kbond.tracker;
 
-import java.util.Date;
-
 /**
  * Interface UserAction - используется для описания методов общих для всех событий.
  * @author kbondarenko
@@ -25,12 +23,4 @@ public interface UserAction {
      * @return - return.
      */
     String info();
-    /**
-     * Поле создающее дату.
-     */
-    Date D = new Date();
-    /**
-     * Поле создающее дату для заявки.
-     */
-    long T = D.getTime();
 }
