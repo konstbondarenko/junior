@@ -1,6 +1,7 @@
 package ru.kbond.tracker;
 
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * Класс-событие для поиска объекта в списке по его имени.
@@ -48,6 +49,16 @@ public class MenuTracker {
      * @param track - массив заявок.
      */
     private Tracker tracker;
+    /**
+     * Поле создающее дату.
+     * @param currentDate - дата на момент создания заявки.
+     */
+    private Date currentDate = new Date();
+    /**
+     * Поле создающее дату для заявки.
+     * @param time - дата на момент создания заявки переведённая в тип long.
+     */
+    private long time = currentDate.getTime();
     /**
      * Поле хранящее события.
      * @param actions - массив событий.
@@ -112,7 +123,7 @@ public class MenuTracker {
             Item item = new Item(input.ask("Enter id : "),
                     input.ask("Enter name : "),
                     input.ask("Enter description : "),
-                    T,
+                    time,
                     new String[] {input.ask("Enter comments : ")});
             System.out.println("");
             tracker.add(item);
@@ -176,7 +187,7 @@ public class MenuTracker {
             Item item = new Item(input.ask("Enter id : "),
                     input.ask("Enter name : "),
                     input.ask("Enter description : "),
-                    T,
+                    time,
                     new String[] {input.ask("Enter comments : ")});
             System.out.println("");
             tracker.update(item);
