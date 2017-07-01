@@ -18,6 +18,11 @@ public class StartUi {
      */
     private Tracker tracker;
     /**
+     * Поле хранящее размер массива меню.
+     * @param ranges - размер массива меню.
+     */
+    private int[] ranges;
+    /**
      * Конструктор.
      * @param input - принимаемый способ ввода данных.
      * @param tracker - принимаемый массив.
@@ -32,18 +37,20 @@ public class StartUi {
     public void init() {
         MenuTracker menu = new MenuTracker(this.input, this.tracker);
         menu.fillActions();
+        this.ranges = new int[menu.getActionsLength()];
+        for (int index = 0; index != this.ranges.length; index++) {
+            this.ranges[index] = index;
+        }
         do {
             menu.show();
-            int key = Integer.valueOf(input.ask("Select: "));
-            menu.select(key);
-
+            menu.select(input.ask("Select: ", this.ranges));
         } while (!"y".equals(this.input.ask("Exit?(y):")));
-}
+    }
     /**
      * Точка входа в программу.
      * @param args - принимаемый аргумент.
      */
     public static void main(String[] args) {
-        new StartUi(new ConsoleInput(), new Tracker()).init();
+        new StartUi(new ValidateInput(), new Tracker()).init();
     }
 }

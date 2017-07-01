@@ -65,6 +65,13 @@ public class MenuTracker {
      */
     private UserAction[] actions = new UserAction[6];
     /**
+     * Getter.
+     * @return - размер массива меню.
+     */
+    public int getActionsLength() {
+        return actions.length;
+    }
+    /**
      * Конструктор.
      * @param input - принимаемый способ ввода данных.
      * @param tracker - принимаемый массив.

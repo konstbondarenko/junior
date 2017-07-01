@@ -29,7 +29,18 @@ public class StubInput implements Input {
      * @param question - принимаемая строка.
      * @return результат.
      */
+    @Override
     public String ask(String question) {
         return answers[position++];
+    }
+    /**
+     * Метод эмулирующий ввод пользователя.
+     * @param question - принимаемая строка.
+     * @param range - размер массива меню.
+     * @return результат.
+     */
+    @Override
+    public int ask(String question, int[] range) {
+        return Integer.parseInt(answers[position++]);
     }
 }
