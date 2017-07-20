@@ -6,14 +6,14 @@ import java.util.Date;
 /**
  * Класс-событие для поиска объекта в списке по его имени.
  */
-class FindByName implements UserAction {
+class FindByName extends BaseAction {
     /**
-     * Метод c номером пункта меню.
-     * @return - пункт меню.
+     * Конструктор.
+     * @param name - название пункта меню.
+     * @param key - номер позиции меню.
      */
-    @Override
-    public int key() {
-        return 5;
+    FindByName(String name, int key) {
+        super(name, key);
     }
     /**
      * Метод реализующий взаимодействие с массивом.
@@ -22,14 +22,7 @@ class FindByName implements UserAction {
      */
     @Override
     public void execute(Input input, Tracker tracker) {
-        tracker.findByName(input.ask("Enter the name : "));
-    }
-    /**
-     * Поле с описанием пункта меню.
-     */
-    @Override
-    public String info() {
-        return String.format("%s. %s", this.key(), "Find the items by name.");
+        System.out.println(Arrays.toString(tracker.findByName(input.ask("Enter the name : "))));
     }
 }
 /**
@@ -72,6 +65,11 @@ public class MenuTracker {
         return actions.length;
     }
     /**
+     * Поле хранящее номер-позицию для добавления нового элемента в массив-меню.
+     * @param position - позиция.
+     */
+    private int position = 0;
+    /**
      * Конструктор.
      * @param input - принимаемый способ ввода данных.
      * @param tracker - принимаемый массив.
@@ -84,12 +82,12 @@ public class MenuTracker {
      * Метод добавляющий события в массив.
      */
     public void fillActions() {
-        this.actions[0] = this.new AddItem();
-        this.actions[1] = this.new ShowAllItems();
-        this.actions[2] = this.new EditItem();
-        this.actions[3] = this.new DeleteItem();
-        this.actions[4] = new MenuTracker.FindById();
-        this.actions[5] = new FindByName();
+        this.actions[position++] = this.new AddItem("Add the new item.", 0);
+        this.actions[position++] = this.new ShowAllItems("Show all items.", 1);
+        this.actions[position++] = this.new EditItem("Edit the items.", 2);
+        this.actions[position++] = this.new DeleteItem("Delete the items.", 3);
+        this.actions[position++] = new MenuTracker.FindById("Find the items by id.", 4);
+        this.actions[position++] = new FindByName("Find the items by name.", 5);
     }
     /**
      * Метод производящий выбор события.
@@ -111,14 +109,14 @@ public class MenuTracker {
     /**
      * Класс-событие добавляющее новый объект.
      */
-    private class AddItem implements UserAction {
+    private class AddItem extends BaseAction {
         /**
-         * Метод c номером пункта меню.
-         * @return - пункт меню.
+         * Конструктор.
+         * @param name - название пункта меню.
+         * @param key - номер позиции меню.
          */
-        @Override
-        public int key() {
-            return 0;
+        AddItem(String name, int key) {
+            super(name, key);
         }
         /**
          * Метод реализующий взаимодействие с массивом.
@@ -135,25 +133,18 @@ public class MenuTracker {
             System.out.println("");
             tracker.add(item);
         }
-        /**
-         * Поле с описанием пункта меню.
-         */
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Add the new item.");
-        }
     }
     /**
      * Класс-событие показывающее все объекты в списке.
      */
-    private class ShowAllItems implements UserAction {
+    private class ShowAllItems extends BaseAction {
         /**
-         * Метод c номером пункта меню.
-         * @return - пункт меню.
+         * Конструктор.
+         * @param name - название пункта меню.
+         * @param key - номер позиции меню.
          */
-        @Override
-        public int key() {
-            return 1;
+        ShowAllItems(String name, int key) {
+            super(name, key);
         }
         /**
          * Метод реализующий взаимодействие с массивом.
@@ -164,25 +155,18 @@ public class MenuTracker {
         public void execute(Input input, Tracker tracker) {
             System.out.println(Arrays.toString(tracker.findAll()));
         }
-        /**
-         * Поле с описанием пункта меню.
-         */
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Show all items.");
-        }
     }
     /**
      * Класс-событие для замены объекта в списке по его id.
      */
-    private class EditItem implements UserAction {
+    private class EditItem extends BaseAction {
         /**
-         * Метод c номером пункта меню.
-         * @return - пункт меню.
+         * Конструктор.
+         * @param name - название пункта меню.
+         * @param key - номер позиции меню.
          */
-        @Override
-        public int key() {
-            return 2;
+        EditItem(String name, int key) {
+            super(name, key);
         }
         /**
          * Метод реализующий взаимодействие с массивом.
@@ -199,25 +183,18 @@ public class MenuTracker {
             System.out.println("");
             tracker.update(item);
         }
-        /**
-         * Поле с описанием пункта меню.
-         */
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Edit the items.");
-        }
     }
     /**
      * Класс-событие для удаления объекта по его id.
      */
-    private class DeleteItem implements UserAction {
+    private class DeleteItem extends BaseAction {
         /**
-         * Метод c номером пункта меню.
-         * @return - пункт меню.
+         * Конструктор.
+         * @param name - название пункта меню.
+         * @param key - номер позиции меню.
          */
-        @Override
-        public int key() {
-            return 3;
+        DeleteItem(String name, int key) {
+            super(name, key);
         }
         /**
          * Метод реализующий взаимодействие с массивом.
@@ -228,25 +205,18 @@ public class MenuTracker {
         public void execute(Input input, Tracker tracker) {
             tracker.delete(input.ask("Enter id : "));
         }
-        /**
-         * Поле с описанием пункта меню.
-         */
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Delete the items.");
-        }
     }
     /**
      * Класс-событие для поиска объекта в списке по его id.
      */
-    private static class FindById implements UserAction {
+    private static class FindById extends BaseAction {
         /**
-         * Метод c номером пункта меню.
-         * @return - пункт меню.
+         * Конструктор.
+         * @param name - название пункта меню.
+         * @param key - номер позиции меню.
          */
-        @Override
-        public int key() {
-            return 4;
+        FindById(String name, int key) {
+            super(name, key);
         }
         /**
          * Метод реализующий взаимодействие с массивом.
@@ -255,14 +225,7 @@ public class MenuTracker {
          */
         @Override
         public void execute(Input input, Tracker tracker) {
-            tracker.findById(input.ask("Enter id : "));
-        }
-        /**
-         * Поле с описанием пункта меню.
-         */
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Find the items by id.");
+            System.out.println(Arrays.toString(tracker.findById(input.ask("Enter id : "))));
         }
     }
 }

@@ -113,12 +113,21 @@ public class Tracker {
      * @param id принимаемый номер.
      * @return результат.
      */
-    public Item findById(String id) {
-        for (int index = 0; index != this.position; index++) {
+    public Item[] findById(String id) {
+        int count = 0;
+        for (int index = 0; index != this.items.length; index++) {
             if (this.items[index] != null && id.equals(this.items[index].getId())) {
-                return this.items[index];
+                count++;
             }
         }
-        return null;
+        Item[] result = new Item[count];
+        count = 0;
+        for (int index = 0; index != this.items.length; index++) {
+            if (this.items[index] != null && id.equals(this.items[index].getId())) {
+                result[count] = this.items[index];
+                count++;
+            }
+        }
+        return result;
     }
 }

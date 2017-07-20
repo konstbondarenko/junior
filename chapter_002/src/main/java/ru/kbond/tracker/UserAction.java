@@ -8,7 +8,7 @@ package ru.kbond.tracker;
  */
 public interface UserAction {
     /**
-     * Поле задающее позицию меню.
+     * Метод задающий позицию меню.
      * @return - return.
      */
     int key();

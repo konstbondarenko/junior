@@ -1,7 +1,6 @@
 package ru.kbond.tracker;
 
 import org.junit.Test;
-import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -80,7 +79,6 @@ public class TrackerTest {
         Tracker tracker = new Tracker();
         Item item = new Item("5", "testName", "testDescription", 123L, new String[] {"testComment"});
         tracker.add(item);
-        assertThat(tracker.findById("5"), is(item));
-        assertEquals(tracker.findById("6"), null);
+        assertThat(tracker.findById("5")[0], is(item));
     }
 }
