@@ -1,5 +1,7 @@
 package ru.kbond.chess;
 
+import java.util.Arrays;
+
 /**
  * Class Board - используется для хранения массива фигур и проверки возможности хода.
  * @author kbondarenko
@@ -17,7 +19,6 @@ public class Board {
      * @return - true если ход возможен.
      */
     public boolean move(Cell source, Cell dest) throws ImpossibleMoveException, FigureNotFoundException, OccupiedWayException {
-        boolean checkWay = false;
         if (figures[source.x][source.y] != null) {
             Cell[] cells = figures[source.x][source.y].way(source, dest);
             int cellsLength = 0;
@@ -30,11 +31,12 @@ public class Board {
                 if (figures[cells[i].x][cells[i].y] != null) {
                     throw new OccupiedWayException();
                 }
-                checkWay = true;
             }
         } else {
             throw new FigureNotFoundException();
         }
-        return checkWay;
+        figures[dest.x][dest.y] = figures[source.x][source.y].clone(dest);
+        figures[source.x][source.y] = null;
+        return true;
     }
 }

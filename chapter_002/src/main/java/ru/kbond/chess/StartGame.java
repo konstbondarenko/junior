@@ -24,19 +24,15 @@ public class StartGame {
      * @return - перемещение фигуры.
      */
     public void play() {
-        Figure bishop = new Bishop(new Cell(0,7));
-        Cell nextPosition = new Cell(7, 0);
+        Figure bishop = new Bishop(new Cell(0, 2));
+        Cell nextPosition = new Cell(2, 4);
         board.figures[bishop.position.x][bishop.position.y] = bishop;
         try {
-            if (board.move(bishop.position, nextPosition)) {
-                board.figures[bishop.position.x][bishop.position.y] = null;
-                bishop = bishop.clone(nextPosition);
-                board.figures[nextPosition.x][nextPosition.y]= bishop;
-            }
+            board.move(bishop.position, nextPosition);
         } catch (ImpossibleMoveException e) {
             System.out.println("You can not move like this.");
         } catch (FigureNotFoundException e) {
-            System.out.println("The figure was not found");
+            System.out.println("The figure was not found.");
         } catch (OccupiedWayException e) {
             System.out.println("On the way there are figures.");
         }
