@@ -11,12 +11,12 @@ public class StartUi {
      * Поле для взаимодействия со способом ввода данных.
      * @param input - способ ввода.
      */
-    private Input input;
+    private final Input input;
     /**
      * Поле для взаимодействия с массивом.
      * @param track - массив заявок.
      */
-    private Tracker tracker;
+    private final Tracker tracker;
     /**
      * Поле хранящее размер массива меню.
      * @param ranges - размер массива меню.
@@ -27,7 +27,7 @@ public class StartUi {
      * @param input - принимаемый способ ввода данных.
      * @param tracker - принимаемый массив.
      */
-    public StartUi(Input input, Tracker tracker) {
+    public StartUi(final Input input, final Tracker tracker) {
         this.input = input;
         this.tracker = tracker;
     }
@@ -51,6 +51,6 @@ public class StartUi {
      * @param args - принимаемый аргумент.
      */
     public static void main(String[] args) {
-        new StartUi(new ValidateInput(), new Tracker()).init();
+        new StartUi(new ValidateInput(new ConsoleInput()), new Tracker()).init();
     }
 }

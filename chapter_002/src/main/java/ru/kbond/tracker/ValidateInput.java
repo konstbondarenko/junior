@@ -6,7 +6,28 @@ package ru.kbond.tracker;
  * @since 01.07.2017
  * @version 1
  */
-public class ValidateInput extends ConsoleInput {
+public class ValidateInput implements Input {
+    /**
+     * Поле для взаимодействия со способом ввода данных.
+     * @param input - способ ввода.
+     */
+    private final Input input;
+    /**
+     * Конструктор.
+     * @param input - принимаемый способ ввода данных.
+     */
+    public ValidateInput(final Input input) {
+        this.input = input;
+    }
+    /**
+     * Метод проверяющий нужно ли выйти из меню.
+     * @param question - принимаемая строка.
+     * @return результат.
+     */
+    @Override
+    public String ask(String question) {
+        return this.input.ask(question);
+    }
     /**
      * Метод принимающий ввод пользователя с проверкой на исключения.
      * @param question - принимаемая строка.
@@ -19,7 +40,7 @@ public class ValidateInput extends ConsoleInput {
         int value = -1;
         do {
             try {
-                value = super.ask(question, range);
+                value = this.input.ask(question, range);
                 invalid = false;
             } catch (MenuOutException moe) {
                 System.out.println("Please select key from menu.");

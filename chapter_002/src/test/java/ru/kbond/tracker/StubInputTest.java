@@ -1,6 +1,9 @@
 package ru.kbond.tracker;
 
 import org.junit.Test;
+
+import java.util.Arrays;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -19,7 +22,7 @@ public class StubInputTest {
         Tracker tracker = new Tracker();
         Input input = new StubInput(new String[]{
                 "0",
-                "1", "testName", "desc", String.valueOf(new String[] {"0"}),
+                "1", "testName", "desc", Arrays.toString(new String[]{"0"}),
                 "y"});
         new StartUi(input, tracker).init();
         assertThat(tracker.findAll()[0].getName(), is("testName"));
@@ -32,10 +35,10 @@ public class StubInputTest {
         Tracker tracker = new Tracker();
         Input input = new StubInput(new String[]{
                 "0",
-                "1", "testNameFirst", "desc", String.valueOf(new String[] {"0"}),
+                "1", "testNameFirst", "desc", Arrays.toString(new String[]{"0"}),
                 "no",
                 "0",
-                "2", "testNameSecond", "desc", String.valueOf(new String[] {"0"}),
+                "2", "testNameSecond", "desc", Arrays.toString(new String[]{"0"}),
                 "no",
                 "1",
                 "y"
@@ -52,10 +55,10 @@ public class StubInputTest {
         Tracker tracker = new Tracker();
         Input input = new StubInput(new String[]{
                 "0",
-                "1", "testNameFirst", "desc", String.valueOf(new String[] {"0"}),
+                "1", "testNameFirst", "desc", Arrays.toString(new String[]{"0"}),
                 "no",
                 "2",
-                "1", "testNameSecond", "desc", String.valueOf(new String[] {"0"}),
+                "1", "testNameSecond", "desc", Arrays.toString(new String[]{"0"}),
                 "y"
         });
         new StartUi(input, tracker).init();
@@ -69,10 +72,10 @@ public class StubInputTest {
         Tracker tracker = new Tracker();
         Input input = new StubInput(new String[]{
                 "0",
-                "1", "testNameFirst", "desc", String.valueOf(new String[] {"0"}),
+                "1", "testNameFirst", "desc", Arrays.toString(new String[]{"0"}),
                 "no",
                 "0",
-                "2", "testNameSecond", "desc", String.valueOf(new String[] {"0"}),
+                "2", "testNameSecond", "desc", Arrays.toString(new String[]{"0"}),
                 "no",
                 "3",
                 "1",
@@ -89,7 +92,7 @@ public class StubInputTest {
         Tracker tracker = new Tracker();
         Input input = new StubInput(new String[]{
                 "0",
-                "1", "testName", "desc", String.valueOf(new String[] {"0"}),
+                "1", "testName", "desc", Arrays.toString(new String[]{"0"}),
                 "4",
                 "1",
                 "y"
@@ -105,7 +108,7 @@ public class StubInputTest {
         Tracker tracker = new Tracker();
         Input input = new StubInput(new String[]{
                 "0",
-                "1", "testName", "desc", String.valueOf(new String[] {"0"}),
+                "1", "testName", "desc", Arrays.toString(new String[]{"0"}),
                 "no",
                 "5",
                 "testName",

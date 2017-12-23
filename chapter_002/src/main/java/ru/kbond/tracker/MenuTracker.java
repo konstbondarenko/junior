@@ -36,22 +36,22 @@ public class MenuTracker {
      * Поле для взаимодействия со способом ввода данных.
      * @param input - способ ввода.
      */
-    private Input input;
+    private final Input input;
     /**
      * Поле для взаимодействия с массивом.
      * @param track - массив заявок.
      */
-    private Tracker tracker;
+    private final Tracker tracker;
     /**
      * Поле создающее дату.
      * @param currentDate - дата на момент создания заявки.
      */
-    private Date currentDate = new Date();
+    private final Date currentDate = new Date();
     /**
      * Поле создающее дату для заявки.
      * @param time - дата на момент создания заявки переведённая в тип long.
      */
-    private long time = currentDate.getTime();
+    private final long time = currentDate.getTime();
     /**
      * Поле хранящее события.
      * @param actions - массив событий.
@@ -74,7 +74,7 @@ public class MenuTracker {
      * @param input - принимаемый способ ввода данных.
      * @param tracker - принимаемый массив.
      */
-    public MenuTracker(Input input, Tracker tracker) {
+    public MenuTracker(final Input input, final Tracker tracker) {
         this.input = input;
         this.tracker = tracker;
     }
