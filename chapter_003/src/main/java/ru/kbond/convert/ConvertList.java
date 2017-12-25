@@ -47,4 +47,18 @@ public class ConvertList {
         }
         return result;
     }
+    /**
+     * The method convert a List<> of arrays into one List<> Integer.
+     * @param list - accepted list of array.
+     * @return - List<> Integer.
+     */
+    public List<Integer> convert(List<int[]> list) {
+        List<Integer> result = new ArrayList<>();
+        for (int[] i : list) {
+            for (int j : i) {
+                result.add(j);
+            }
+        }
+        return result;
+    }
 }
