@@ -8,17 +8,16 @@ package ru.kbond.max;
  */
 public class Max {
 	/**
-	 * Метод возвращающий максимальное из 2 чисел.
+	 * Метод возвращающий максимум из 2 чисел.
 	 * @param first первое число.
 	 * @param second второе число.
 	 * @return результат
 	 */
 	public int max(int first, int second) {
-        int max = first > second ? first : second;
-        return max;
+		return first > second ? first : second;
     }
 	/**
-	 * Метод возвращающий максимальное из 3 чисел.
+	 * Метод возвращающий максимум из 3 чисел.
 	 * @param first первое число.
 	 * @param second второе число.
 	 * @param third третье число.
