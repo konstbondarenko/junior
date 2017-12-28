@@ -25,7 +25,7 @@ public class StubInputTest {
                 "1", "testName", "desc", Arrays.toString(new String[]{"0"}),
                 "y"});
         new StartUi(input, tracker).init();
-        assertThat(tracker.findAll()[0].getName(), is("testName"));
+        assertThat(tracker.findAll().get(0).getName(), is("testName"));
     }
     /**
      * Тест, проверяющий вывод всех объектов для пользователя.
@@ -44,8 +44,8 @@ public class StubInputTest {
                 "y"
         });
         new StartUi(input, tracker).init();
-        assertThat(tracker.findAll()[0].getName(), is("testNameFirst"));
-        assertThat(tracker.findAll()[1].getName(), is("testNameSecond"));
+        assertThat(tracker.findAll().get(0).getName(), is("testNameFirst"));
+        assertThat(tracker.findAll().get(1).getName(), is("testNameSecond"));
     }
     /**
      * Тест, проверяющий изменения в объекте пользователем.
@@ -62,7 +62,7 @@ public class StubInputTest {
                 "y"
         });
         new StartUi(input, tracker).init();
-        assertThat(tracker.findAll()[0].getName(), is("testNameSecond"));
+        assertThat(tracker.findAll().get(0).getName(), is("testNameSecond"));
     }
     /**
      * Тест, проверяющий удаление объекта пользователем.
@@ -82,7 +82,7 @@ public class StubInputTest {
                 "y"
         });
         new StartUi(input, tracker).init();
-        assertThat(tracker.findAll()[0].getName(), is("testNameSecond"));
+        assertThat(tracker.findAll().get(0).getName(), is("testNameSecond"));
     }
     /**
      * Тест, проверяющий поиск по id объекта пользователем.
@@ -98,7 +98,7 @@ public class StubInputTest {
                 "y"
         });
         new StartUi(input, tracker).init();
-        assertThat(tracker.findAll()[0].getId(), is("1"));
+        assertThat(tracker.findAll().get(0).getId(), is("1"));
     }
     /**
      * Тест, проверяющий поиск по имени объекта пользователем.
@@ -115,6 +115,6 @@ public class StubInputTest {
                 "y"
         });
         new StartUi(input, tracker).init();
-        assertThat(tracker.findAll()[0].getName(), is("testName"));
+        assertThat(tracker.findAll().get(0).getName(), is("testName"));
     }
 }

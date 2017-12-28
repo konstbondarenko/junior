@@ -1,6 +1,5 @@
 package ru.kbond.tracker;
 
-import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -22,7 +21,7 @@ class FindByName extends BaseAction {
      */
     @Override
     public void execute(Input input, Tracker tracker) {
-        System.out.println(Arrays.toString(tracker.findByName(input.ask("Enter the name : "))));
+        System.out.println(tracker.findByName(input.ask("Enter the name : ")));
     }
 }
 /**
@@ -153,7 +152,7 @@ public class MenuTracker {
          */
         @Override
         public void execute(Input input, Tracker tracker) {
-            System.out.println(Arrays.toString(tracker.findAll()));
+            System.out.println(tracker.findAll());
         }
     }
     /**
@@ -225,7 +224,7 @@ public class MenuTracker {
          */
         @Override
         public void execute(Input input, Tracker tracker) {
-            System.out.println(Arrays.toString(tracker.findById(input.ask("Enter id : "))));
+            System.out.println(tracker.findById(input.ask("Enter id : ")));
         }
     }
 }

@@ -23,8 +23,8 @@ public class TrackerTest {
         tracker.add(itemfilledFirst);
         tracker.add(itemNull);
         tracker.add(itemfilledSecond);
-        assertThat(tracker.findAll()[0], is(itemfilledFirst));
-        assertThat(tracker.findAll()[1], is(itemfilledSecond));
+        assertThat(tracker.findAll().get(0), is(itemfilledFirst));
+        assertThat(tracker.findAll().get(1), is(itemfilledSecond));
     }
     /**
      * Тест, проверяющий добавление элемента в массив.
@@ -34,7 +34,7 @@ public class TrackerTest {
         Tracker tracker = new Tracker();
         Item item = new Item("5", "testName", "testDescription", 123L, new String[] {"testComment"});
         tracker.add(item);
-        assertThat(tracker.findAll()[0], is(item));
+        assertThat(tracker.findAll().get(0), is(item));
     }
     /**
      * Тест, проверяющий обновление по id элемента в массиве.
@@ -46,7 +46,7 @@ public class TrackerTest {
         Item itemNew = new Item("5", "testNameRenewed", "testDescriptionRenewed", 321L, new String[] {"testCommentRenewed"});
         tracker.add(itemLast);
         tracker.update(itemNew);
-        assertThat(tracker.findAll()[0], is(itemNew));
+        assertThat(tracker.findAll().get(0), is(itemNew));
     }
     /**
      * Тест, проверяющий удаление по id элемента в массиве.
@@ -59,7 +59,7 @@ public class TrackerTest {
         tracker.add(itemDelete);
         tracker.add(itemShifted);
         tracker.delete("5");
-        assertThat(tracker.findAll()[0], is(itemShifted));
+        assertThat(tracker.findAll().get(0), is(itemShifted));
     }
     /**
      * Тест, проверяющий поиск по имени элемента в массиве.
@@ -69,7 +69,7 @@ public class TrackerTest {
         Tracker tracker = new Tracker();
         Item item = new Item("5", "testName", "testDescription", 123L, new String[] {"testComment"});
         tracker.add(item);
-        assertThat(tracker.findByName("testName")[0], is(item));
+        assertThat(tracker.findByName("testName").get(0), is(item));
     }
     /**
      * Тест, проверяющий поиск по id элемента в массиве.
@@ -79,6 +79,6 @@ public class TrackerTest {
         Tracker tracker = new Tracker();
         Item item = new Item("5", "testName", "testDescription", 123L, new String[] {"testComment"});
         tracker.add(item);
-        assertThat(tracker.findById("5")[0], is(item));
+        assertThat(tracker.findById("5").get(0), is(item));
     }
 }
