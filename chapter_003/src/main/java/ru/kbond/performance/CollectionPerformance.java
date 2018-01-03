@@ -1,4 +1,4 @@
-package ru.kbond.speedCollection;
+package ru.kbond.performance;
 
 import java.util.*;
 
