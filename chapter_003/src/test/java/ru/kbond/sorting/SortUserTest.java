@@ -46,4 +46,38 @@ public class SortUserTest {
                 new User("Ivan", 18)));
         assertThat(result, is(expected));
     }
+    /**
+     * Test checking the sorting by name length.
+     */
+    @Test
+    public void whenNameAlexanderIvanThenNameIvanAlexander() {
+        List<User> list = Arrays.asList(
+                new User("Alexander", 25),
+                new User("Ivan", 30));
+        SortUser sortUser = new SortUser();
+        List<User> result = sortUser.sortNameLength(list);
+        List<User> expected = Arrays.asList(
+                new User("Ivan", 30),
+                new User("Alexander", 25));
+        assertThat(result, is(expected));
+    }
+    /**
+     * Test checking the sorting by name and age.
+     */
+    @Test
+    public void whenSameNameThenSortAge() {
+        List<User> list = Arrays.asList(
+                new User("Alexander", 25),
+                new User("Ivan", 30),
+                new User("Alexander", 20),
+                new User("Ivan", 25));
+        SortUser sortUser = new SortUser();
+        List<User> result = sortUser.sortByAllFields(list);
+        List<User> expected = Arrays.asList(
+                new User("Alexander", 20),
+                new User("Alexander", 25),
+                new User("Ivan", 25),
+                new User("Ivan", 30));
+        assertThat(result, is(expected));
+    }
 }

@@ -1,5 +1,7 @@
 package ru.kbond.sorting;
 
+import java.util.Objects;
+
 /**
  * Class storing user data and a comparator for sorting by age.
  * @author kbondarenko
@@ -28,6 +30,13 @@ public class User implements Comparable<User> {
     }
     /**
      * Getter.
+     * @return getName - user name.
+     */
+    public String getName() {
+        return name;
+    }
+    /**
+     * Getter.
      * @return getAge - user age.
      */
     public int getAge() {
@@ -40,7 +49,7 @@ public class User implements Comparable<User> {
      */
     @Override
     public int compareTo(User o) {
-        return getAge() == o.getAge() ? 0 : getAge() > o.getAge() ? 1 : -1;
+        return Integer.compare(getAge(), o.getAge());
     }
     /**
      * toString.
@@ -55,5 +64,30 @@ public class User implements Comparable<User> {
                 ", age=" + age
                 +
                 '}';
+    }
+    /**
+     * Equals.
+     * @return - override equals.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return age == user.age
+                &&
+                Objects.equals(name, user.name);
+    }
+    /**
+     * HashCode.
+     * @return - override hashCode.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, age);
     }
 }
