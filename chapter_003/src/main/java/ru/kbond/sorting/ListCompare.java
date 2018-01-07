@@ -22,12 +22,20 @@ public class ListCompare implements Comparator<List<Integer>> {
     public int compare(List<Integer> left, List<Integer> right) {
         int sumLeft = 0;
         int sumRight = 0;
-        for (int i : left) {
-            sumLeft = i + sumLeft;
+        boolean result = false;
+        if (left.size() == right.size()) {
+            for (int i : left) {
+                sumLeft = i + sumLeft;
+            }
+            for (int j : right) {
+                sumRight = j + sumRight;
+            }
+            result = true;
         }
-        for (int j : right) {
-            sumRight = j + sumRight;
-        }
-        return Integer.compare(sumLeft, sumRight);
+        return result
+                ?
+                Integer.compare(sumLeft, sumRight)
+                :
+                Integer.compare(left.size(), right.size());
     }
 }
