@@ -1,7 +1,7 @@
 package ru.kbond.department;
 
 import org.junit.Test;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import static org.hamcrest.Matchers.is;
@@ -20,8 +20,11 @@ public class DepartmentTest {
      * the code of the upper subdivision.
      */
     @Test
-    public void whenUnsortedListThenSortedListAddUpperSubDivision() {
+    public void whenUnsortedListThenSortedAscendingListAddUpperSubDivision() {
         Department department = new Department();
+        DepartmentSorting departmentSorting = new DepartmentSorting();
+
+
         List<String> list = Arrays.asList(
                 "K1/SK1",
                 "K1/SK2",
@@ -30,28 +33,35 @@ public class DepartmentTest {
                 "K2",
                 "K2/SK1/SSK1",
                 "K2/SK1/SSK2");
-        List<String> expected = Arrays.asList(
-                "K1",
-                "K1/SK1",
-                "K1/SK1/SSK1",
-                "K1/SK1/SSK2",
-                "K1/SK2",
-                "K2",
-                "K2/SK1",
-                "K2/SK1/SSK1",
-                "K2/SK1/SSK2");
-        List<String> result = department.sortDepartment(list);
+
+        List<List<String>> expected = new ArrayList<>();
+        expected.add(Arrays.asList("K1"));
+        expected.add(Arrays.asList("K1", "SK1"));
+        expected.add(Arrays.asList("K1", "SK2"));
+        expected.add(Arrays.asList("K1", "SK1", "SSK1"));
+        expected.add(Arrays.asList("K1", "SK1", "SSK2"));
+        expected.add(Arrays.asList("K2"));
+        expected.add(Arrays.asList("K2", "SK1"));
+        expected.add(Arrays.asList("K2", "SK1", "SSK1"));
+        expected.add(Arrays.asList("K2", "SK1", "SSK2"));
+
+        List<List<String>> result = department.sortDepartment(list);
+        departmentSorting.ascendingSort(result);
+
+
         assertThat(result, is(expected));
     }
     /**
-     * Test sort subdivision in descending order
+     * Test sort subdivision in decreasing order
      * with the addition of a line with
      * the code of the upper subdivision.
      */
     @Test
-    public void whenUnsortedListThenSortedListDescending() {
+    public void whenUnsortedListThenSortedDecreasingListAddUpperSubDivision() {
         Department department = new Department();
-        StringDecreasingSort sorting = new StringDecreasingSort();
+        DepartmentSorting departmentSorting = new DepartmentSorting();
+
+
         List<String> list = Arrays.asList(
                 "K1/SK1",
                 "K1/SK2",
@@ -60,18 +70,22 @@ public class DepartmentTest {
                 "K2",
                 "K2/SK1/SSK1",
                 "K2/SK1/SSK2");
-        List<String> expected = Arrays.asList(
-                "K2",
-                "K2/SK1",
-                "K2/SK1/SSK2",
-                "K2/SK1/SSK1",
-                "K1",
-                "K1/SK2",
-                "K1/SK1",
-                "K1/SK1/SSK2",
-                "K1/SK1/SSK1");
-        List<String> result = department.sortDepartment(list);
-        result.sort(sorting);
+
+        List<List<String>> expected = new ArrayList<>();
+        expected.add(Arrays.asList("K2"));
+        expected.add(Arrays.asList("K2", "SK1"));
+        expected.add(Arrays.asList("K2", "SK1", "SSK2"));
+        expected.add(Arrays.asList("K2", "SK1", "SSK1"));
+        expected.add(Arrays.asList("K1"));
+        expected.add(Arrays.asList("K1", "SK2"));
+        expected.add(Arrays.asList("K1", "SK1"));
+        expected.add(Arrays.asList("K1", "SK1", "SSK2"));
+        expected.add(Arrays.asList("K1", "SK1", "SSK1"));
+
+        List<List<String>> result = department.sortDepartment(list);
+        departmentSorting.decreasingSort(result);
+
+
         assertThat(result, is(expected));
     }
 
