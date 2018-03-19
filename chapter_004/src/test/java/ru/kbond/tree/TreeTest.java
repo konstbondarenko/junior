@@ -52,7 +52,7 @@ public class TreeTest {
         tree.add(1, 2);
         tree.add(2, 1);
 
-        Iterator it = tree.iterator();
+        Iterator<Integer> it = tree.iterator();
         assertThat(it.hasNext(), is(true));
         assertThat(it.next(), is(1));
         assertThat(it.hasNext(), is(true));
@@ -69,7 +69,7 @@ public class TreeTest {
         tree.add(2, 4);
         tree.add(2, 5);
 
-        Iterator it = tree.iterator();
+        Iterator<Integer> it = tree.iterator();
         assertThat(it.hasNext(), is(true));
         assertThat(it.next(), is(1));
         assertThat(it.hasNext(), is(true));
@@ -89,8 +89,33 @@ public class TreeTest {
         Tree<Integer> tree = new Tree<>();
         tree.add(1, 2);
 
-        Iterator it = tree.iterator();
+        Iterator<Integer> it = tree.iterator();
         tree.add(2, 3);
         it.next();
+    }
+    /**
+     * Test.
+     */
+    @Test
+    public void shouldReturnTrueIfTreeIsBinary() {
+        Tree<Integer> tree = new Tree<>();
+        tree.add(1, 2);
+        tree.add(1, 3);
+        tree.add(2, 4);
+        tree.add(2, 5);
+        assertThat(tree.isBinary(), is(true));
+    }
+    /**
+     * Test.
+     */
+    @Test
+    public void shouldReturnFalseIfTreeIsNotBinary() {
+        Tree<Integer> tree = new Tree<>();
+        tree.add(1, 2);
+        tree.add(1, 3);
+        tree.add(2, 4);
+        tree.add(2, 5);
+        tree.add(2, 6);
+        assertThat(tree.isBinary(), is(false));
     }
 }

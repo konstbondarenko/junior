@@ -36,7 +36,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
      */
     private int modCount = 0;
     /**
-     * The size of the LinkedContainer (the number of elements it contains).
+     * The size of the tree (the number of elements it contains).
      */
     private int size;
     /**
@@ -61,7 +61,6 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         public Node(final E value) {
             this.value = value;
         }
-
         /**
          * Adding children (leaves) to the root.
          *
@@ -88,7 +87,6 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
             return this.value.compareTo(that) == 0;
         }
     }
-
     /**
      * A method for finding a tree node.
      *
@@ -143,23 +141,40 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         return checkAdd;
     }
     /**
+     * Check whether the tree is binary.
+     *
+     * @return  {@code true} if the tree is binary.
+     */
+    public boolean isBinary() {
+        boolean checkBinary = true;
+        Queue<Node<E>> data = new LinkedList<>();
+        data.offer(this.root);
+        while (!data.isEmpty()) {
+            Node<E> el = data.poll();
+            if (el.leaves().size() <= 2) {
+                for (Node<E> child : el.leaves()) {
+                    data.offer(child);
+                }
+            } else {
+                checkBinary = false;
+            }
+        }
+        return checkBinary;
+    }
+    /**
      * Returns an iterator over the elements in this container in proper sequence.
      *
      * @return an iterator over the elements in this container in proper sequence.
      */
     @Override
-    public Iterator iterator() {
+    public Iterator<E> iterator() {
         return new TreeIterator<>(this.root);
     }
 
     /**
      * Iterator.
      */
-    private class TreeIterator<E> implements Iterator<E> {
-        /**
-         * Tree root.
-         */
-        private final Node node;
+    private class TreeIterator<E extends Comparable<E>> implements Iterator<E> {
         /**
          * Stores the value of nodes.
          */
@@ -174,16 +189,14 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
          * Length of the List storing the value of the nodes
          */
         private int indexLength = 0;
-
         /**
          * Constructor.
          * Calls a method listValue to create a list of tree values.
          *
          * @param node  nodes for iteration.
          */
-        public TreeIterator(final Node node) {
-            this.node = node;
-            listValue();
+        public TreeIterator(final Node<E> node) {
+            listValue(node);
         }
         /**
          * The modCount value that the iterator believes that the backing
@@ -219,10 +232,10 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         /**
          * Adds the value of nodes to a List.
          */
-        private void listValue() {
+        private void listValue(Node<E> node) {
             Queue<Node> data = new LinkedList<>();
-            data.offer(this.node);
-            result.add((E) ((Node) node).value);
+            data.offer(node);
+            result.add(node.value);
             indexLength++;
             while (!data.isEmpty()) {
                 Node el = data.poll();
