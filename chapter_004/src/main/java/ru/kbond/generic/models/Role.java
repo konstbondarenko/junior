@@ -15,7 +15,7 @@ public class Role extends Base {
      *
      * @param id  id for Role.
      */
-    protected Role(String id) {
+    public Role(String id) {
         super(id);
     }
 }

@@ -15,7 +15,7 @@ public class User extends Base {
      *
      * @param id  id for User.
      */
-    protected User(String id) {
+    public User(String id) {
         super(id);
     }
 }

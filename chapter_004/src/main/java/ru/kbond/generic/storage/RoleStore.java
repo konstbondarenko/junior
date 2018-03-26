@@ -1,8 +1,8 @@
 package ru.kbond.generic.storage;
 
 import ru.kbond.generic.AbstractStore;
-import ru.kbond.generic.Base;
 import ru.kbond.generic.SimpleArray;
+import ru.kbond.generic.models.Role;
 
 /**
  * Class container for storing objects Role.
@@ -11,13 +11,13 @@ import ru.kbond.generic.SimpleArray;
  * @since 20.02.2018
  * @version 1
  */
-public class RoleStore<T extends Base> extends AbstractStore<T> {
+public class RoleStore extends AbstractStore<Role> {
     /**
      * Constructor.
      *
      * @param simpleArray  container for storing objects Role.
      */
-    public RoleStore(SimpleArray<T> simpleArray) {
+    public RoleStore(SimpleArray<Role> simpleArray) {
         super(simpleArray);
     }
 }

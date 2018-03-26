@@ -19,7 +19,7 @@ public class UserStoreTest {
      */
     @Test
     public void whenAddUserAndFindById() {
-        UserStore<User> store = new UserStore<>(new SimpleArray<>(5));
+        UserStore store = new UserStore(new SimpleArray<>(5));
         User user = new User("1");
         store.add(user);
 
@@ -30,7 +30,7 @@ public class UserStoreTest {
      */
     @Test
     public void whenAddUserOneThenReplaceUserTwo() {
-        UserStore<User> store = new UserStore<>(new SimpleArray<>(5));
+        UserStore store = new UserStore(new SimpleArray<>(5));
         User user1 = new User("1");
         User user2 = new User("2");
         store.add(user1);
@@ -43,7 +43,7 @@ public class UserStoreTest {
      */
     @Test(expected = NoSuchElementException.class)
     public void whenDeleteUserOneAndFindByIdThenException() {
-        UserStore<User> store = new UserStore<>(new SimpleArray<>(5));
+        UserStore store = new UserStore(new SimpleArray<>(5));
         User user = new User("1");
         store.add(user);
         store.delete("1");
