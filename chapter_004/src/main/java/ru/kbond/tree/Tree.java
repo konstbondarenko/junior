@@ -119,23 +119,21 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
     @Override
     public boolean add(E parent, E child) {
         boolean checkAdd = false;
-        Node<E> tmp;
-        Optional<Node<E>> result;
         if (parent.compareTo(child) != 0) {
             if (this.root == null) {
                 this.root = new Node<>(parent);
-                size++;
+                this.size++;
                 this.root.add(new Node<>(child));
-                size++;
-                modCount++;
+                this.size++;
+                this.modCount++;
                 checkAdd = true;
             }
             if (!findBy(child).isPresent()) {
-                result = findBy(parent);
-                tmp = result.get();
+                Optional<Node<E>> result = findBy(parent);
+                Node<E> tmp = result.get();
                 tmp.add(new Node<>(child));
-                size++;
-                modCount++;
+                this.size++;
+                this.modCount++;
             }
         }
         return checkAdd;
@@ -176,27 +174,21 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
      */
     private class TreeIterator<E extends Comparable<E>> implements Iterator<E> {
         /**
-         * Stores the value of nodes.
+         * The queue for the root and its nodes.
          */
-        private List<E> result = new ArrayList<>();
+        private Queue<Node<E>> data = new LinkedList<>();
         /**
-         * The field element index.
-         *
-         * @param position  element position.
+         * The root from which iteration begins.
          */
-        private int position = 0;
-        /**
-         * Length of the List storing the value of the nodes
-         */
-        private int indexLength = 0;
+        private Node<E> item;
         /**
          * Constructor.
          * Calls a method listValue to create a list of tree values.
          *
-         * @param node  nodes for iteration.
+         * @param root  nodes for iteration.
          */
-        public TreeIterator(final Node<E> node) {
-            listValue(node);
+        public TreeIterator(final Node<E> root) {
+            this.data.offer(root);
         }
         /**
          * The modCount value that the iterator believes that the backing
@@ -211,7 +203,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
          */
         @Override
         public boolean hasNext() {
-            return position < indexLength;
+            return !this.data.isEmpty();
         }
         /**
          * Method returns the next element in the iteration.
@@ -227,30 +219,17 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            return result.get(position++);
-        }
-        /**
-         * Adds the value of nodes to a List.
-         */
-        private void listValue(Node<E> node) {
-            Queue<Node> data = new LinkedList<>();
-            data.offer(node);
-            result.add(node.value);
-            indexLength++;
-            while (!data.isEmpty()) {
-                Node el = data.poll();
-                for (Object child : el.leaves()) {
-                    result.add((E) ((Node) child).value);
-                    data.offer((Node) child);
-                    indexLength++;
-                }
+            this.item = this.data.poll();
+            for (Node<E> child : this.item.leaves()) {
+                this.data.offer(child);
             }
+            return this.item.value;
         }
         /**
          * The method checks whether the collection was changed during iteration.
          */
         final void checkForComodification() {
-            if (modCount != expectedModCount) {
+            if (modCount != this.expectedModCount) {
                 throw new ConcurrentModificationException();
             }
         }
