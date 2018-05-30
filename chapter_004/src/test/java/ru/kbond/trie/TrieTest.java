@@ -34,8 +34,16 @@ public class TrieTest {
      * Test.
      */
     @Test
+    public void whenTestInsertAndFindWordPositionThenPositionZero() {
+        List<Integer> expected = new ArrayList<>(Collections.singletonList(0));
+        assertThat(this.wordIndex.getIndexes4Word("сирени"), is(expected));
+    }
+    /**
+     * Test.
+     */
+    @Test
     public void whenTestInsertAndFindWordPositionThenPositionSixtyEight() {
-        List<Integer> expected = new ArrayList<>(Collections.singletonList(68));
+        List<Integer> expected = new ArrayList<>(Collections.singletonList(67));
         assertThat(this.wordIndex.getIndexes4Word("ними"), is(expected));
     }
     /**
@@ -43,7 +51,7 @@ public class TrieTest {
      */
     @Test
     public void whenTestInsertAndFindWordPositionThenPositionSeventyFive() {
-        List<Integer> expected = new ArrayList<>(Collections.singletonList(75));
+        List<Integer> expected = new ArrayList<>(Collections.singletonList(74));
         assertThat(this.wordIndex.getIndexes4Word("Их"), is(expected));
     }
     /**
@@ -51,7 +59,7 @@ public class TrieTest {
      */
     @Test
     public void whenTestInsertAndFindTwoWordPosition() {
-        List<Integer> expected = new ArrayList<>(Arrays.asList(24, 64));
+        List<Integer> expected = new ArrayList<>(Arrays.asList(23, 63));
         assertThat(this.wordIndex.getIndexes4Word("над"), is(expected));
     }
     /**

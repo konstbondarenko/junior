@@ -47,7 +47,7 @@ public class Trie {
                 insertChar(trie, chars[counter]);
                 if (counter == chars.length - 1) {
                     getChild(trie, chars[counter]).setIsWord(true);
-                    getChild(trie, chars[counter]).setWordPosition(position - (word.length() - 1));
+                    getChild(trie, chars[counter]).setWordPosition(position - word.length());
                     this.size++;
                     checkAdd = true;
                     break;
@@ -58,7 +58,7 @@ public class Trie {
                 if (!trie.isWord()) {
                     trie.setIsWord(true);
                 }
-                trie.setWordPosition(position - (word.length() - 1));
+                trie.setWordPosition(position - word.length());
                 this.size++;
                 checkAdd = true;
                 break;
