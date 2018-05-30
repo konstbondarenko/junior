@@ -11,7 +11,6 @@ import javafx.scene.shape.Rectangle;
  */
 public class RectangleMove implements Runnable {
     private final Rectangle rect;
-    private boolean exit = true;
     /**
      * Constructor.
      */
@@ -19,35 +18,21 @@ public class RectangleMove implements Runnable {
         this.rect = rect;
     }
     /**
-     * The method used to complete the thread.
-     */
-    public void stop(boolean exit) {
-        this.exit = exit;
-    }
-    /**
      * The method produces a movement of
      * the rectangle in the window.
      */
     @Override
     public void run() {
-        while (this.exit) {
-            try {
-            while (this.rect.getX() != 300) {
-                if (!this.exit) {
-                    break;
-                }
-                this.rect.setX(this.rect.getX() + 1);
-                Thread.sleep(20);
+        int position = 1;
+        while (!Thread.currentThread().isInterrupted()) {
+            this.rect.setX(this.rect.getX() + position);
+            if (this.rect.getX() == 300 || this.rect.getX() == 0) {
+                position *= -1;
             }
-            while (this.rect.getX() != 0) {
-                if (!this.exit) {
-                    break;
-                }
-                this.rect.setX(this.rect.getX() - 1);
-                    Thread.sleep(20);
-                }
+            try {
+                Thread.sleep(50);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
         }
     }
