@@ -1,5 +1,7 @@
 package ru.kbond.list;
 
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
 import java.util.*;
 
 /**
@@ -10,6 +12,7 @@ import java.util.*;
  * @since 22.02.2018
  * @version 1
  */
+@ThreadSafe
 public class ArrayContainer<E> implements Iterable<E> {
     /**
      * Default initial capacity.
@@ -27,6 +30,7 @@ public class ArrayContainer<E> implements Iterable<E> {
      *
      * @param container  array objects.
      */
+    @GuardedBy("this")
     private Object[] container;
     /**
      * The number of times this container has been <i>structurally modified</i>.
@@ -55,7 +59,7 @@ public class ArrayContainer<E> implements Iterable<E> {
      * @return the number of elements in this container.
      */
     public int size() {
-        return size;
+        return this.size;
     }
     /**
      * Constructor an empty container with an initial capacity of ten.
@@ -85,9 +89,11 @@ public class ArrayContainer<E> implements Iterable<E> {
      * Increases container capacity when filling.
      */
     private void increaseCapacity() {
-        int oldCapacity = this.container.length;
-        int newCapacity = ((oldCapacity * 3) / 2 + 1);
-        this.container = Arrays.copyOf(container, newCapacity);
+        synchronized (this) {
+            int oldCapacity = this.container.length;
+            int newCapacity = ((oldCapacity * 3) / 2 + 1);
+            this.container = Arrays.copyOf(this.container, newCapacity);
+        }
     }
     /**
      * Appends the specified element to the end of this container.
@@ -95,11 +101,13 @@ public class ArrayContainer<E> implements Iterable<E> {
      * @param e  element to be appended to this container.
      */
     public void add(E e) {
-        if (this.size == this.container.length - 1) {
-            increaseCapacity();
+        synchronized (this) {
+            if (this.size == this.container.length - 1) {
+                increaseCapacity();
+            }
+            this.container[this.size++] = e;
+            this.modCount++;
         }
-        this.modCount++;
-        this.container[size++] = e;
     }
     /**
      * Returns the element at the specified position in this container.
@@ -109,8 +117,10 @@ public class ArrayContainer<E> implements Iterable<E> {
      * @throws  IndexOutOfBoundsException
      */
     public E get(int position) {
-        checkElementIndex(position);
-        return (E) this.container[position];
+        synchronized (this) {
+            checkElementIndex(position);
+            return (E) this.container[position];
+        }
     }
     /**
      * The method checks whether the index leaves the container.
@@ -119,10 +129,10 @@ public class ArrayContainer<E> implements Iterable<E> {
      * @return  {@code true} if the element at the specified position in this container.
      */
     private boolean checkElementIndex(int index) {
-        if (!(index >= 0 && index < size)) {
+        if (!(index >= 0 && index < this.size)) {
             throw new IndexOutOfBoundsException("Index: " + index
                     +
-                    ", Size: " + size);
+                    ", Size: " + this.size);
         }
         return true;
     }
@@ -143,26 +153,28 @@ public class ArrayContainer<E> implements Iterable<E> {
      * in this container, or -1 if this container does not contain the element.
      */
     public int indexOf(Object o) {
-        int index = 0;
-        boolean checkIndex = false;
-        if (o == null) {
-            for (int i = 0; i < size; i++) {
-                if (container[i] == null) {
-                    checkIndex = true;
-                    index = i;
-                    break;
+        synchronized (this) {
+            int index = 0;
+            boolean checkIndex = false;
+            if (o == null) {
+                for (int i = 0; i < this.size; i++) {
+                    if (this.container[i] == null) {
+                        checkIndex = true;
+                        index = i;
+                        break;
+                    }
+                }
+            } else {
+                for (int i = 0; i < this.size; i++) {
+                    if (o.equals(this.container[i])) {
+                        checkIndex = true;
+                        index = i;
+                        break;
+                    }
                 }
             }
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (o.equals(container[i])) {
-                    checkIndex = true;
-                    index = i;
-                    break;
-                }
-            }
+            return checkIndex ? index : -1;
         }
-        return checkIndex ? index : -1;
     }
     /**
      * Returns an iterator over the elements in this container in proper sequence.
@@ -171,7 +183,9 @@ public class ArrayContainer<E> implements Iterable<E> {
      */
     @Override
     public Iterator<E> iterator() {
-        return new ContainerIterator<E>(container);
+        synchronized (this) {
+            return new ContainerIterator<>(this.container);
+        }
     }
 
     /**
@@ -183,6 +197,7 @@ public class ArrayContainer<E> implements Iterable<E> {
          *
          * @param objects  array objects.
          */
+        @GuardedBy("this")
         private final Object[] objects;
         /**
          * The field element index.
@@ -211,7 +226,7 @@ public class ArrayContainer<E> implements Iterable<E> {
          */
         @Override
         public boolean hasNext() {
-            return size > index;
+            return size > this.index;
         }
         /**
          * Method returns the next element in the iteration.
@@ -223,17 +238,19 @@ public class ArrayContainer<E> implements Iterable<E> {
          */
         @Override
         public E next() {
-            checkForComodification();
-            if (!hasNext()) {
-                throw new NoSuchElementException();
+            synchronized (this) {
+                checkForComodification();
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                return (E) this.objects[this.index++];
             }
-            return (E) objects[index++];
         }
         /**
          * The method checks whether the collection was changed during iteration.
          */
         final void checkForComodification() {
-            if (modCount != expectedModCount) {
+            if (modCount != this.expectedModCount) {
                 throw new ConcurrentModificationException();
             }
         }

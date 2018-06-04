@@ -1,5 +1,6 @@
 package ru.kbond.list;
 
+import org.junit.Before;
 import org.junit.Test;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -14,58 +15,50 @@ import static org.hamcrest.Matchers.is;
  * @version 1
  */
 public class ArrayContainerTest {
+    private ArrayContainer<Integer> container;
+    private Iterator<Integer> it;
+    @Before
+    public void setUp() {
+        this.container = new ArrayContainer<>();
+        this.container.add(1);
+        this.container.add(2);
+        this.container.add(3);
+        this.it = this.container.iterator();
+    }
     /**
      * Test.
      */
     @Test
     public void whenAddIntegerFourAndSixThanGetIntegerFourAndSix() {
-        ArrayContainer<Integer> container = new ArrayContainer<>();
-        container.add(1);
-
-        assertThat(container.get(0), is(1));
+        assertThat(this.container.get(0), is(1));
     }
     /**
      * Test.
      */
     @Test
     public void whenAddElementThanIncreaseCapacity() {
-        ArrayContainer<Integer> container = new ArrayContainer<>(1);
-        container.add(1);
-        container.add(2);
-        container.add(3);
-
-        assertThat(container.get(2), is(3));
+        assertThat(this.container.get(2), is(3));
     }
     /**
      * Test.
      */
     @Test(expected = NoSuchElementException.class)
     public void shouldReturnNumbersSequentially() {
-        ArrayContainer<Integer> container = new ArrayContainer<>();
-        container.add(1);
-        container.add(2);
-
-        Iterator<Integer> it = container.iterator();
-
-        assertThat(it.hasNext(), is(true));
-        assertThat(it.next(), is(1));
-        assertThat(it.hasNext(), is(true));
-        assertThat(it.next(), is(2));
-        assertThat(it.hasNext(), is(false));
-        it.next();
+        assertThat(this.it.hasNext(), is(true));
+        assertThat(this.it.next(), is(1));
+        assertThat(this.it.hasNext(), is(true));
+        assertThat(this.it.next(), is(2));
+        assertThat(this.it.hasNext(), is(true));
+        assertThat(this.it.next(), is(3));
+        assertThat(this.it.hasNext(), is(false));
+        this.it.next();
     }
     /**
      * Test.
      */
     @Test(expected = ConcurrentModificationException.class)
     public void shouldThrowExceptionWhenModifyingAfterCreatingIterator() {
-        ArrayContainer<Integer> container = new ArrayContainer<>();
-        container.add(1);
-        container.add(2);
-
-        Iterator<Integer> it = container.iterator();
-
-        container.add(3);
-        it.next();
+        this.container.add(4);
+        this.it.next();
     }
 }

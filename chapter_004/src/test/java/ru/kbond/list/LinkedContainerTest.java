@@ -1,5 +1,6 @@
 package ru.kbond.list;
 
+import org.junit.Before;
 import org.junit.Test;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -14,48 +15,41 @@ import static org.hamcrest.Matchers.is;
  * @version 1
  */
 public class LinkedContainerTest {
+    private LinkedContainer<Integer> container;
+    private Iterator<Integer> it;
+    @Before
+    public void setUp() {
+        this.container = new LinkedContainer<>();
+        this.container.add(1);
+        this.container.add(2);
+        this.it = this.container.iterator();
+    }
     /**
      * Test.
      */
     @Test
     public void whenAddIntegerOneAndTwoThanGetIntegerOneAndTwo() {
-        LinkedContainer<Integer> container = new LinkedContainer<>();
-        container.add(1);
-        container.add(2);
-
-        assertThat(container.get(0), is(1));
-        assertThat(container.get(1), is(2));
+        assertThat(this.container.get(0), is(1));
+        assertThat(this.container.get(1), is(2));
     }
     /**
      * Test.
      */
     @Test(expected = NoSuchElementException.class)
     public void shouldReturnNumbersSequentially() {
-        LinkedContainer<Integer> container = new LinkedContainer<>();
-        container.add(1);
-        container.add(2);
-
-        Iterator<Integer> it = container.iterator();
-
-        assertThat(it.hasNext(), is(true));
-        assertThat(it.next(), is(1));
-        assertThat(it.hasNext(), is(true));
-        assertThat(it.next(), is(2));
-        assertThat(it.hasNext(), is(false));
-        it.next();
+        assertThat(this.it.hasNext(), is(true));
+        assertThat(this.it.next(), is(1));
+        assertThat(this.it.hasNext(), is(true));
+        assertThat(this.it.next(), is(2));
+        assertThat(this.it.hasNext(), is(false));
+        this.it.next();
     }
     /**
      * Test.
      */
     @Test(expected = ConcurrentModificationException.class)
     public void shouldThrowExceptionWhenModifyingAfterCreatingIterator() {
-        LinkedContainer<Integer> container = new LinkedContainer<>();
-        container.add(1);
-        container.add(2);
-
-        Iterator<Integer> it = container.iterator();
-
-        container.add(3);
-        it.next();
+        this.container.add(3);
+        this.it.next();
     }
 }

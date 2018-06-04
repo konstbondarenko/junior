@@ -1,5 +1,7 @@
 package ru.kbond.list;
 
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -12,14 +14,17 @@ import java.util.NoSuchElementException;
  * @since 26.02.2018
  * @version 1
  */
+@ThreadSafe
 public class LinkedContainer<E> implements Iterable<E>  {
     /**
      * Pointer to first node.
      */
+    @GuardedBy("this")
     protected Node<E> first;
     /**
      * Pointer to last node.
      */
+    @GuardedBy("this")
     protected Node<E> last;
     /**
      * The number of times this container has been <i>structurally modified</i>.
@@ -48,7 +53,7 @@ public class LinkedContainer<E> implements Iterable<E>  {
      * @return the number of elements in this container.
      */
     public int size() {
-        return size;
+        return this.size;
     }
     /**
      * Appends the specified element to the end of this container.
@@ -56,16 +61,18 @@ public class LinkedContainer<E> implements Iterable<E>  {
      * @param e  element to be appended to this container.
      */
     public void add(E e) {
-        final Node<E> lastNode = this.last;
-        final Node<E> newNode = new Node<>(lastNode, e, null);
-        this.last = newNode;
-        if (lastNode == null) {
-            this.first = newNode;
-        } else {
-            lastNode.next = newNode;
+        synchronized (this) {
+            final Node<E> lastNode = this.last;
+            final Node<E> newNode = new Node<>(lastNode, e, null);
+            this.last = newNode;
+            if (lastNode == null) {
+                this.first = newNode;
+            } else {
+                lastNode.next = newNode;
+            }
+            this.size++;
+            this.modCount++;
         }
-        size++;
-        modCount++;
     }
     /**
      * Returns the element at the specified position in this container.
@@ -75,12 +82,14 @@ public class LinkedContainer<E> implements Iterable<E>  {
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
     public E get(int index) {
-        checkElementIndex(index);
-        Node<E> getElement = first;
-        for (int i = 0; i < index; i++) {
-            getElement = getElement.next;
+        synchronized (this) {
+            checkElementIndex(index);
+            Node<E> getElement = this.first;
+            for (int i = 0; i < index; i++) {
+                getElement = getElement.next;
+            }
+            return getElement.item;
         }
-        return getElement.item;
     }
     /**
      * Removes and returns the first element from this container.
@@ -90,23 +99,25 @@ public class LinkedContainer<E> implements Iterable<E>  {
      * @throws NoSuchElementException if this container is empty.
      */
     public E removeFirst() {
-        final Node<E> remFirst = first;
-        if (remFirst == null) {
-            throw new NoSuchElementException();
+        synchronized (this) {
+            final Node<E> remFirst = this.first;
+            if (remFirst == null) {
+                throw new NoSuchElementException();
+            }
+            final E element = remFirst.item;
+            final Node<E> next = remFirst.next;
+            remFirst.item = null;
+            remFirst.next = null;
+            this.first = next;
+            if (next == null) {
+                this.last = null;
+            } else {
+                next.prev = null;
+            }
+            this.size--;
+            this.modCount++;
+            return element;
         }
-        final E element = remFirst.item;
-        final Node<E> next = remFirst.next;
-        remFirst.item = null;
-        remFirst.next = null;
-        first = next;
-        if (next == null) {
-            last = null;
-        } else {
-            next.prev = null;
-        }
-        size--;
-        modCount++;
-        return element;
     }
     /**
      * Removes and returns the last element from this container.
@@ -115,23 +126,25 @@ public class LinkedContainer<E> implements Iterable<E>  {
      * @throws NoSuchElementException if this container is empty.
      */
     public E removeLast() {
-        final Node<E> remLast = last;
-        if (remLast == null) {
-            throw new NoSuchElementException();
+        synchronized (this) {
+            final Node<E> remLast = this.last;
+            if (remLast == null) {
+                throw new NoSuchElementException();
+            }
+            final E element = remLast.item;
+            final Node<E> prev = remLast.prev;
+            remLast.item = null;
+            remLast.prev = null;
+            this.last = prev;
+            if (prev == null) {
+                this.first = null;
+            } else {
+                prev.next = null;
+            }
+            this.size--;
+            this.modCount++;
+            return element;
         }
-        final E element = remLast.item;
-        final Node<E> prev = remLast.prev;
-        remLast.item = null;
-        remLast.prev = null;
-        last = prev;
-        if (prev == null) {
-            first = null;
-        } else {
-            prev.next = null;
-        }
-        size--;
-        modCount++;
-        return element;
     }
     /**
      * The method checks whether the index leaves the container.
@@ -140,10 +153,10 @@ public class LinkedContainer<E> implements Iterable<E>  {
      * @return  {@code true} if the element at the specified position in this container.
      */
     private boolean checkElementIndex(int index) {
-        if (!(index >= 0 && index < size)) {
+        if (!(index >= 0 && index < this.size)) {
             throw new IndexOutOfBoundsException("Index: " + index
                     +
-                    ", Size: " + size);
+                    ", Size: " + this.size);
         }
         return true;
     }
@@ -164,34 +177,36 @@ public class LinkedContainer<E> implements Iterable<E>  {
      * in this container, or -1 if this container does not contain the element.
      */
     public int indexOf(Object o) {
-        int index = 0;
-        int count = 0;
-        boolean checkIndex = false;
-        if (o == null) {
-            for (Node<E> x = first; x != null; x = x.next) {
-                if (x.item == null) {
-                    index = count;
-                    checkIndex = true;
-                    break;
+        synchronized (this) {
+            int index = 0;
+            int count = 0;
+            boolean checkIndex = false;
+            if (o == null) {
+                for (Node<E> x = this.first; x != null; x = x.next) {
+                    if (x.item == null) {
+                        index = count;
+                        checkIndex = true;
+                        break;
+                    }
+                    count++;
                 }
-                count++;
-            }
-        } else {
-            for (Node<E> x = first; x != null; x = x.next) {
-                if (o.equals(x.item)) {
-                    index = count;
-                    checkIndex = true;
-                    break;
+            } else {
+                for (Node<E> x = this.first; x != null; x = x.next) {
+                    if (o.equals(x.item)) {
+                        index = count;
+                        checkIndex = true;
+                        break;
+                    }
+                    count++;
                 }
-                count++;
             }
+            return checkIndex ? index : -1;
         }
-        return checkIndex ? index : -1;
     }
     /**
      * The element of the linked container.
      */
-    private static class Node<E> {
+    private class Node<E> {
         E item;
         Node<E> next;
         Node<E> prev;
@@ -215,7 +230,9 @@ public class LinkedContainer<E> implements Iterable<E>  {
      */
     @Override
     public Iterator<E> iterator() {
-        return new LinkedIterator<E>();
+        synchronized (this) {
+            return new LinkedIterator<>(this.first);
+        }
     }
 
     /**
@@ -227,7 +244,14 @@ public class LinkedContainer<E> implements Iterable<E>  {
          *
          * @param head  first node of the iterable container.
          */
-        private Node<E> head = (Node<E>) first;
+        @GuardedBy("this")
+        private Node<E> head;
+        /**
+         * Constructor.
+         */
+        private LinkedIterator(Node<E> node) {
+            this.head = node;
+        }
         /**
          * The field element index.
          *
@@ -240,6 +264,7 @@ public class LinkedContainer<E> implements Iterable<E>  {
          * has detected concurrent modification.
          */
         private int expectedModCount = modCount;
+
         /**
          * Method returns {@code true} if the iteration has more elements.
          *
@@ -247,7 +272,7 @@ public class LinkedContainer<E> implements Iterable<E>  {
          */
         @Override
         public boolean hasNext() {
-            return index < size;
+            return this.index < size;
         }
         /**
          * Method returns the next element in the iteration.
@@ -259,21 +284,23 @@ public class LinkedContainer<E> implements Iterable<E>  {
          */
         @Override
         public E next() {
-            checkForComodification();
-            if (!hasNext()) {
-                throw new NoSuchElementException();
+            synchronized (this) {
+                checkForComodification();
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                if (this.index != 0) {
+                    this.head = this.head.next;
+                }
+                this.index++;
+                return this.head.item;
             }
-            if (index != 0) {
-                this.head = head.next;
-            }
-            this.index++;
-            return head.item;
         }
         /**
          * The method checks whether the collection was changed during iteration.
          */
         final void checkForComodification() {
-            if (modCount != expectedModCount) {
+            if (modCount != this.expectedModCount) {
                 throw new ConcurrentModificationException();
             }
         }
