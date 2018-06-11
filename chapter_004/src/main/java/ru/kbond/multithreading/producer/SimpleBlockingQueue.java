@@ -55,12 +55,11 @@ public class SimpleBlockingQueue<T> {
      */
     public void offer(T value) throws InterruptedException {
         synchronized (this) {
-            if (this.queue.size() <= this.getCapacity()) {
-                this.queue.offer(value);
-                this.notify();
-            } else {
+            while (this.queue.size() == this.getCapacity()) {
                 this.wait();
             }
+            this.queue.offer(value);
+            this.notifyAll();
         }
     }
     /**
@@ -77,7 +76,9 @@ public class SimpleBlockingQueue<T> {
             while (this.queue.isEmpty()) {
                 this.wait();
             }
-            return this.queue.poll();
+            T t = this.queue.poll();
+            this.notifyAll();
+            return t;
         }
     }
 }
