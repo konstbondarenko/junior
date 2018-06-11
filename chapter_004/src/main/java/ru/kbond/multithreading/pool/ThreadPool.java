@@ -19,7 +19,6 @@ public class ThreadPool {
     private final int numOfCores;
     private final List<Thread> threads = new LinkedList<>();
     private final Queue<Runnable> tasks = new LinkedBlockingQueue<>();
-    private boolean shutDown = false;
     /**
      * Constructor.
      *
@@ -27,6 +26,11 @@ public class ThreadPool {
      */
     public ThreadPool() {
         this.numOfCores = Runtime.getRuntime().availableProcessors();
+    }
+    /**
+     * Start threads.
+     */
+    public void threadInit() {
         for (int i = 0; i < this.numOfCores; i++) {
             this.threads.add(new ThreadWorker());
             this.threads.get(i).start();
@@ -44,17 +48,10 @@ public class ThreadPool {
      * Indicates whether the pool should complete its work.
      */
     public void shutDown() throws InterruptedException {
-        this.shutDown = true;
         for (Thread thread : this.threads) {
             thread.interrupt();
             thread.join();
         }
-    }
-    /**
-     * Getter.
-     */
-    public boolean isShutDown() {
-        return shutDown;
     }
     /**
      * The method takes a task from the queue
@@ -64,13 +61,10 @@ public class ThreadPool {
         @Override
         public void run() {
             Runnable job;
-            while (true) {
+            while (!Thread.currentThread().isInterrupted()) {
                 job = tasks.poll();
                 if (job != null) {
                     job.run();
-                }
-                if (isShutDown() && tasks.isEmpty()) {
-                    break;
                 }
             }
         }

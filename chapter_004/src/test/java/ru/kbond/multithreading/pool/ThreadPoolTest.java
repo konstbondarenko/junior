@@ -39,6 +39,7 @@ public class ThreadPoolTest {
     public void whenExecuteNumberOfCoresThreadThen10() throws InterruptedException {
         ThreadPool threadPool = new ThreadPool();
         Count count = new Count();
+        threadPool.threadInit();
         for (int i = 0; i < 10; i++) {
             threadPool.work(new ThreadCount(count));
         }
