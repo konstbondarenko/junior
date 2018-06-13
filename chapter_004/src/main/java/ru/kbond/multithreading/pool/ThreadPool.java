@@ -50,6 +50,8 @@ public class ThreadPool {
     public void shutDown() throws InterruptedException {
         for (Thread thread : this.threads) {
             thread.interrupt();
+        }
+        for (Thread thread : this.threads) {
             thread.join();
         }
     }
@@ -61,10 +63,13 @@ public class ThreadPool {
         @Override
         public void run() {
             Runnable job;
-            while (!Thread.currentThread().isInterrupted()) {
+            while (true) {
                 job = tasks.poll();
                 if (job != null) {
                     job.run();
+                }
+                if (tasks.isEmpty() && isInterrupted()) {
+                    break;
                 }
             }
         }
