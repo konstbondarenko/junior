@@ -48,7 +48,7 @@ public class SimpleLock {
      */
     public final void unlock() {
         synchronized (this) {
-            while (Thread.currentThread().equals(this.owner)) {
+            if (Thread.currentThread().equals(this.owner)) {
                 this.owner = null;
                 this.locked = false;
                 this.notifyAll();
