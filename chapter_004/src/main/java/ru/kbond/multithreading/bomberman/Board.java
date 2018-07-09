@@ -31,7 +31,7 @@ public class Board {
     /**
      * Getter.
      */
-    public ReentrantLock[][] getBoard() {
+    public ReentrantLock[][] getBoardCell() {
         return board;
     }
 }

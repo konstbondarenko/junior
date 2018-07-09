@@ -1,7 +1,7 @@
 package ru.kbond.multithreading.bomberman.startgame;
 
-import ru.kbond.multithreading.bomberman.BasePersonage;
 import ru.kbond.multithreading.bomberman.Board;
+import ru.kbond.multithreading.bomberman.Input;
 
 /**
  * The class initializes the players.
@@ -12,12 +12,14 @@ import ru.kbond.multithreading.bomberman.Board;
  */
 public class Game {
     private final Board board;
+    private final Input input;
 
     /**
      * Constructor.
      */
-    public Game(Board board) {
+    public Game(final Board board, final Input input) {
         this.board = board;
+        this.input = input;
     }
 
     /**
@@ -25,9 +27,10 @@ public class Game {
      *
      * @param name player name.
      */
-    public void bomberInit(String name) {
-        final BasePersonage bomber = new BasePersonage(name, this.board);
-        Thread bomberRun = new Thread(bomber);
+    public void bomberInit(final String name) {
+        final Bomberman bomberman = new Bomberman(name, board, input);
+        Thread bomberRun = new Thread(bomberman);
+        System.out.println("старт");
         bomberRun.start();
     }
 }
