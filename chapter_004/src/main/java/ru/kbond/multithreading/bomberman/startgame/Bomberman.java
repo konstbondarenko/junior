@@ -1,6 +1,7 @@
 package ru.kbond.multithreading.bomberman.startgame;
 
 import ru.kbond.multithreading.bomberman.*;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -11,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  * @since 09.07.2018
  */
 public class Bomberman implements Personage, Runnable {
-    private BasePersonage basePersonage;
+    private final BasePersonage basePersonage;
     private final Input input;
 
     /**
@@ -34,7 +35,7 @@ public class Bomberman implements Personage, Runnable {
         this.basePersonage.setCharacter();
         while (!Thread.currentThread().isInterrupted()) {
             try {
-                move(this.input.ask("row"), this.input.ask("column"));
+                validateMove(this.input.ask("row"), this.input.ask("column"));
             } catch (ArrayIndexOutOfBoundsException ar) {
                 System.out.println("Выход за пределы поля, повторите ход.");
             } catch (InvalidStepException inv) {
@@ -55,22 +56,23 @@ public class Bomberman implements Personage, Runnable {
      * @throws InterruptedException it is thrown out in case of a meeting
      *                              of the player with the monster.
      */
-    private void move(int xNew, int yNew) throws InterruptedException {
+    private void validateMove(int xNew, int yNew) throws InterruptedException {
         int xTmp = this.basePersonage.getX();
         int yTmp = this.basePersonage.getY();
-        TimeUnit.SECONDS.sleep(1);
         if (this.basePersonage.getBoard().getBoardCell()[xTmp][yTmp].hasQueuedThreads()) {
             Thread.currentThread().interrupt();
         }
         if (Math.abs(xTmp - xNew) > 1 || Math.abs(yTmp - yNew) > 1) {
             throw new InvalidStepException("Ход не может превышать 1 клетку, повторите ход.");
         }
-        if (this.basePersonage.getBoard().getBoardCell()[xNew][yNew].tryLock(500L, TimeUnit.MILLISECONDS)) {
-            this.basePersonage.getBoard().getBoardCell()[xTmp][yTmp].unlock();
-            this.basePersonage.setX(xNew);
-            this.basePersonage.setY(yNew);
-        } else {
+        if (!this.basePersonage.getBoard().move(
+                this.basePersonage.getBoard().getBoardCell()[xTmp][yTmp],
+                this.basePersonage.getBoard().getBoardCell()[xNew][yNew])
+                ) {
             throw new InvalidStepException("Клетка занята, повторите ход.");
         }
+        this.basePersonage.setX(xNew);
+        this.basePersonage.setY(yNew);
+        TimeUnit.SECONDS.sleep(1);
     }
 }

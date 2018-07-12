@@ -96,7 +96,7 @@ public class BasePersonage implements Personage {
      *
      * @return {@code true} if the coordinates are allowed.
      */
-   public boolean checkBorders(int x, int y) {
+    public boolean checkBorders(int x, int y) {
         boolean check = true;
         if (x >= this.board.getBoardCell().length || y >= this.board.getBoardCell().length) {
             check = false;

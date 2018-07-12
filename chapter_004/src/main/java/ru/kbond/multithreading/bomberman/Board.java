@@ -1,5 +1,6 @@
 package ru.kbond.multithreading.bomberman;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -26,6 +27,22 @@ public class Board {
                 this.board[i][j] = new ReentrantLock();
             }
         }
+    }
+
+    /**
+     * The method checks if the cell is available for the move,
+     * if so then the object grabs the lock and frees the occupied cell.
+     *
+     * @param source cell occupied by an object.
+     * @param dest   the cell into which to go.
+     * @return {@code true} if the capture was successful.
+     */
+    public boolean move(ReentrantLock source, ReentrantLock dest) throws InterruptedException {
+        boolean lock = dest.tryLock(500L, TimeUnit.MILLISECONDS);
+        if (lock) {
+            source.unlock();
+        }
+        return lock;
     }
 
     /**
