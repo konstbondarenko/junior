@@ -59,9 +59,6 @@ public class Bomberman implements Personage, Runnable {
     private void validateMove(int xNew, int yNew) throws InterruptedException {
         int xTmp = this.basePersonage.getX();
         int yTmp = this.basePersonage.getY();
-        if (this.basePersonage.getBoard().getBoardCell()[xTmp][yTmp].hasQueuedThreads()) {
-            Thread.currentThread().interrupt();
-        }
         if (Math.abs(xTmp - xNew) > 1 || Math.abs(yTmp - yNew) > 1) {
             throw new InvalidStepException("Ход не может превышать 1 клетку, повторите ход.");
         }

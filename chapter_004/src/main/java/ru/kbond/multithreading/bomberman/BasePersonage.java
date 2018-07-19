@@ -70,25 +70,34 @@ public class BasePersonage implements Personage {
      * The method produces random numbers for
      * character movement.
      */
-    public void move() {
-        int xMove = 0;
-        int yMove = 0;
-        int number = (int) (Math.random() * (5));
-        if (number == 0) {
-            xMove = -1;
-        } else if (number == 1) {
-            yMove = -1;
-        } else if (number == 2) {
-            xMove = +1;
-        } else if (number == 3) {
-            yMove = +1;
-        }
-        if (checkBorders(this.getX() + xMove, this.getY() + yMove)) {
-            this.setX(this.getX() + xMove);
-            this.setY(this.getY() + yMove);
-        } else if (!Thread.currentThread().isInterrupted()) {
-            move();
-        }
+    public void automaticMove() throws InterruptedException {
+        int xMove;
+        int yMove;
+        boolean done = true;
+        do {
+            xMove = 0;
+            yMove = 0;
+            int number = (int) (Math.random() * (5));
+            if (number == 0) {
+                xMove = -1;
+            } else if (number == 1) {
+                yMove = -1;
+            } else if (number == 2) {
+                xMove = +1;
+            } else if (number == 3) {
+                yMove = +1;
+            }
+            if (checkBorders(this.getX() + xMove, this.getY() + yMove)) {
+                if (this.board.move(
+                        this.board.getBoardCell()[this.getX()][this.getY()],
+                        this.board.getBoardCell()[this.getX() + xMove][this.getY() + yMove])
+                        ) {
+                    done = false;
+                }
+            }
+        } while (done);
+        this.setX(this.getX() + xMove);
+        this.setY(this.getY() + yMove);
     }
 
     /**
@@ -116,8 +125,8 @@ public class BasePersonage implements Personage {
         int xTmp;
         int yTmp;
         do {
-            xTmp = (int) (Math.random() * (this.board.getBoardCell().length));
-            yTmp = (int) (Math.random() * (this.board.getBoardCell().length));
+            xTmp = (int) (Math.random() * (this.board.getBoardCell().length - 1));
+            yTmp = (int) (Math.random() * (this.board.getBoardCell().length - 1));
             cellLock = this.board.getBoardCell()[xTmp][yTmp].tryLock();
             if (cellLock) {
                 this.setX(xTmp);
