@@ -77,7 +77,6 @@ public class SwitcherTest {
         thread2.start();
         thread1.join();
         thread2.join();
-        Thread.sleep(200);
         String result = "1111111111222222222211111111112222222222";
         assertThat(result, is(this.switcher.getStr()));
     }

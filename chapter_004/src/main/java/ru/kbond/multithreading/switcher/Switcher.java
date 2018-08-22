@@ -9,13 +9,13 @@ package ru.kbond.multithreading.switcher;
  * @since 14.08.2018
  */
 public class Switcher {
-    private StringBuilder str;
+    final private StringBuffer str;
 
     /**
      * Constructor.
      */
     public Switcher() {
-        this.str = new StringBuilder();
+        this.str = new StringBuffer();
     }
 
     /**
