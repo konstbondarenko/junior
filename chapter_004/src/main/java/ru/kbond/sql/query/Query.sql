@@ -29,25 +29,46 @@ INSERT INTO product(name, type_id, expiried_data, price) VALUES('Морожен�
 INSERT INTO product(name, type_id, expiried_data, price) VALUES('Колбаса Докторская', 4, '2018-10-10', 400);
 
 --1. Написать запрос получение всех продуктов с типом "СЫР"
-SELECT * FROM product WHERE product.type_id = 1;
+SELECT p.name, p.expiried_data, p.price
+FROM product AS p INNER JOIN type AS t
+ON t.name = 'Сыр' AND t.id = p.type_id
+ORDER BY p.name;
 
 --2. Написать запрос получения всех продуктов, у кого в имени есть слово "Мороженное"
-SELECT product.name FROM product WHERE product.name LIKE '%Мороженное%';
+SELECT product.name
+FROM product
+WHERE product.name LIKE '%Мороженное%';
 
 --3. Написать запрос, который выводит все продукты, срок годности которых заканчивается в следующем месяце.
-SELECT * FROM product WHERE product.expiried_data BETWEEN '2018-10-01' AND '2018-10-30';
+SELECT p.name, p.expiried_data, p.price
+FROM product AS p
+WHERE p.expiried_data BETWEEN '2018-10-01' AND '2018-10-30'
+ORDER BY p.name, p.expiried_data;
 
 --4. Написать запрос, который вывод самый дорогой продукт.
-SELECT MAX(price) FROM product;
+SELECT p.name, p.expiried_data, p.price
+FROM product AS p
+WHERE p.price = (SELECT MAX(price) FROM product);
 
 --5. Написать запрос, который выводит количество всех продуктов определенного типа.
-SELECT t.name, (SELECT COUNT(p.id) FROM product AS p WHERE p.type_id = t.id) FROM type AS t;
+SELECT t.name, COUNT(p.id) AS number_of_products
+FROM type AS t
+INNER JOIN product AS p ON t.id = p.type_id
+GROUP BY t.name
+ORDER BY t.name;
 
 --6. Написать запрос получение всех продуктов с типом "СЫР" и "МОЛОКО".
-SELECT p.name FROM product AS p WHERE p.type_id IN(1,2);
+SELECT p.name FROM product AS p
+INNER JOIN type AS t ON t.name = 'Сыр' AND t.id = p.type_id
+OR t.name = 'Молоко' AND t.id = p.type_id
+ORDER BY p.name;
 
 --7. Написать запрос, который выводит тип продуктов, которых осталось меньше 10 штук.
-SELECT * FROM type AS t WHERE ((SELECT COUNT(p.id) FROM product AS p WHERE p.type_id = t.id) < 10);
+SELECT t.name, COUNT(p.id) AS number_of_products
+FROM product AS p
+INNER JOIN type AS t ON t.id = p.type_id
+GROUP BY t.name
+HAVING COUNT(p.id) < 10;
 
 --8. Вывести все продукты и их тип.
 SELECT p.name, t.name FROM product AS p INNER JOIN type AS t ON p.type_id = t.id;
