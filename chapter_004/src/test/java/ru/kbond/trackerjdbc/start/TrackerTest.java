@@ -33,7 +33,7 @@ public class TrackerTest {
     private Comment comment;
     private Properties prs;
     private static final Logger LOG = LoggerFactory.getLogger(TrackerTest.class);
-    private final static String CONFIG = "db_test.properties";
+    private final static String CONFIG = "ru.kbond.trackerjdbc.start/db_test.properties";
 
     @Before
     public void setUp() {

@@ -29,8 +29,12 @@
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.21.0.1</version>
         </dependency>
-    </dependencies>
-    <build>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.11.3</version>
+        </dependency>
+    </dependencies>    <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
