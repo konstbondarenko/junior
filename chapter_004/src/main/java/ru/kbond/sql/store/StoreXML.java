@@ -1,7 +1,7 @@
 package ru.kbond.sql.store;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.kbond.sql.store.pojo.Entry;
 import ru.kbond.sql.store.pojo.EntryList;
 
@@ -19,7 +19,7 @@ import java.util.List;
  * @since 03.10.2018
  */
 public class StoreXML {
-    private static final Logger LOG = LoggerFactory.getLogger(StoreXML.class);
+    private static final Logger LOG = LogManager.getLogger(StoreXML.class.getName());
     private File target;
 
     /**

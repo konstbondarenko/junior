@@ -20,7 +20,7 @@ public class HashContainer<E> implements Iterable<E> {
     /**
      * Default initial capacity.
      */
-    static final int DEFAULT_INITIAL_CAPACITY = 16;
+    private static final int DEFAULT_INITIAL_CAPACITY = 16;
     /**
      * The array buffer into which the elements of the HashContainer are stored.
      * The capacity of the HashContainer is the length of this array buffer.

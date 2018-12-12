@@ -1,7 +1,7 @@
 package ru.kbond.sql.store;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -18,7 +18,7 @@ import java.io.File;
  * @since 03.10.2018
  */
 public class ConvertXSQT {
-    private static final Logger LOG = LoggerFactory.getLogger(ConvertXSQT.class);
+    private static final Logger LOG = LogManager.getLogger(ConvertXSQT.class);
     /**
      * Method converts the xml file according to the specified scheme xslt.
      *

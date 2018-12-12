@@ -1,7 +1,7 @@
 package ru.kbond.sql.store;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.kbond.sql.store.pojo.Entry;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ import java.util.Properties;
  * @since 03.10.2018
  */
 public class StoreSQL implements AutoCloseable {
-    private static final Logger LOG = LoggerFactory.getLogger(StoreSQL.class);
+    private static final Logger LOG = LogManager.getLogger(StoreSQL.class);
     private final static String CONFIG = "ru.kbond.sql.store/db_store.properties";
     private Properties prs;
     private Connection connection;

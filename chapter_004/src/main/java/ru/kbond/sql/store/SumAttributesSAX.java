@@ -1,6 +1,7 @@
 package ru.kbond.sql.store;
 
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -19,7 +20,7 @@ import java.io.IOException;
  * @since 03.10.2018
  */
 public class SumAttributesSAX extends DefaultHandler {
-    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(SumAttributesSAX.class);
+    private static final Logger LOG = LogManager.getLogger(SumAttributesSAX.class.getName());
     private int sumAttrib;
     private File file;
 
