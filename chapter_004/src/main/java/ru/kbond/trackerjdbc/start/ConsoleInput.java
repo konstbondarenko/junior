@@ -1,5 +1,7 @@
 package ru.kbond.trackerjdbc.start;
 
+import ru.kbond.trackerjdbc.exception.MenuOutException;
+
 import java.util.Scanner;
 
 /**

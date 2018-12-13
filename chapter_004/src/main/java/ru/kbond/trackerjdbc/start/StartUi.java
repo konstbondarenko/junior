@@ -1,10 +1,12 @@
 package ru.kbond.trackerjdbc.start;
 
+import ru.kbond.trackerjdbc.connection.PoolConnection;
+
 /**
  * Class StartUi - точка входа в программу, меню.
  * @author kbondarenko
- * @since 29.05.2017
- * @version 1
+ * @since 20.12.2018
+ * @version 2
  */
 public class StartUi {
     /**
@@ -43,15 +45,21 @@ public class StartUi {
         }
         do {
             menu.show();
-            menu.select(input.ask("Select: ", this.ranges));
+            menu.select(this.input.ask("Select: ", this.ranges));
         } while (!"y".equals(this.input.ask("Exit?(y):")));
-        this.tracker.close();
     }
     /**
      * Точка входа в программу.
      * @param args - принимаемый аргумент.
      */
     public static void main(String[] args) {
-        new StartUi(new ValidateInput(new ConsoleInput()), new Tracker()).init();
+        new StartUi(
+                new ValidateInput(
+                        new ConsoleInput()
+                ),
+                new Tracker(
+                        new PoolConnection()
+                )
+        ).init();
     }
 }

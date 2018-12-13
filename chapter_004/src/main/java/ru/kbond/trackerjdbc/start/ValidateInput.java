@@ -1,5 +1,7 @@
 package ru.kbond.trackerjdbc.start;
 
+import ru.kbond.trackerjdbc.exception.MenuOutException;
+
 /**
  * Class ValidateInput - ввод пользовательских данных из консоли с проверкой на исключения.
  * @author kbondarenko

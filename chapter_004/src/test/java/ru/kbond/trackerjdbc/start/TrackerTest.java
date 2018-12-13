@@ -1,17 +1,17 @@
 package ru.kbond.trackerjdbc.start;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.tomcat.jdbc.pool.DataSource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import ru.kbond.trackerjdbc.models.Comment;
 import ru.kbond.trackerjdbc.models.Item;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
@@ -28,16 +28,16 @@ import static org.junit.Assert.assertThat;
  */
 public class TrackerTest {
     private Tracker tracker;
+    private DataSource dataSource;
     private Item itemOne;
     private Item itemTwo;
     private Comment comment;
     private Properties prs;
-    private static final Logger LOG = LoggerFactory.getLogger(TrackerTest.class);
-    private final static String CONFIG = "ru.kbond.trackerjdbc.start/db_test.properties";
+    private static final Logger LOG = LogManager.getLogger(TrackerTest.class);
+    private static final String CONFIG = "ru.kbond.trackerjdbc.start/db_test.properties";
 
     @Before
     public void setUp() {
-        this.tracker = new Tracker(CONFIG);
         this.itemOne = new Item("first", "testNameFirst", 1L);
         this.itemTwo = new Item("second", "testNameSecond", 2L);
         this.comment = new Comment("desc", 3L);
@@ -47,19 +47,21 @@ public class TrackerTest {
         } catch (IOException e) {
             LOG.error(e.getMessage(), e);
         }
+        this.dataSource = new DataSource();
+        this.dataSource.setDriverClassName(this.prs.getProperty("driver"));
+        this.dataSource.setUrl(this.prs.getProperty("url"));
+        this.dataSource.setUsername(this.prs.getProperty("user"));
+        this.dataSource.setPassword(this.prs.getProperty("password"));
+        this.tracker = new Tracker(dataSource);
     }
 
     /**
-     * The method opens a new connection to clear the tables.
+     * Метод очищает тестовую таблицу.
      */
     @After
     public void tearDown() {
-        this.tracker.close();
-        try (Connection connection = DriverManager.getConnection(
-                prs.getProperty("user_url"),
-                prs.getProperty("user"),
-                prs.getProperty("password")
-        ); Statement st = connection.createStatement()) {
+        try (Connection connection = this.dataSource.getConnection();
+             Statement st = connection.createStatement()) {
             st.addBatch("DELETE FROM comments;");
             st.addBatch("DELETE FROM items;");
             st.addBatch("ALTER SEQUENCE items_item_id_seq RESTART;");
@@ -68,21 +70,20 @@ public class TrackerTest {
         } catch (SQLException e) {
             LOG.error(e.getMessage(), e);
         }
+        this.dataSource.close(true);
     }
 
     /**
-     * Test that checks the method of searching for all elements of the database.
+     * Тест добавляет объект в базу данных и проверяет его наличие.
      */
     @Test
     public void whenFindAllItemsThenReturnAllItems() {
         this.tracker.add(this.itemOne);
-        this.tracker.add(this.itemTwo);
         assertThat(this.tracker.findAll().get(0).getName(), is(this.itemOne.getName()));
-        assertThat(this.tracker.findAll().get(1).getName(), is(this.itemTwo.getName()));
     }
 
     /**
-     * Test that checks the search for the element name in the database.
+     * Тест производит поиск объекта по имени.
      */
     @Test
     public void whenFindByNameItemThenTrackerHasAdjustedItem() {
@@ -91,7 +92,7 @@ public class TrackerTest {
     }
 
     /**
-     * Test that checks for an update on the id of an element in an database.
+     * Тест добавляет объект, затем обновляет его..
      */
     @Test
     public void whenUpdateItemThenTrackerHasRenewedItem() {
@@ -101,7 +102,7 @@ public class TrackerTest {
     }
 
     /**
-     * Test that checks the deletion of an element in an database by an id.
+     * Тест производит добавление, а после, удаление объекта из базы данных.
      */
     @Test
     public void whenDeleteItemThenTrackerHasDeleteItem() {
@@ -112,7 +113,7 @@ public class TrackerTest {
     }
 
     /**
-     * Test that checks the search for the id of an element in an database.
+     * Тест производит поиск объекта по его id.
      */
     @Test
     public void whenFindByIdItemThenTrackerHasAdjustedItem() {
@@ -122,7 +123,7 @@ public class TrackerTest {
     }
 
     /**
-     * Test adds a comment to the item and gets it.
+     * Тест добавляет комментарий к объекту, затем проверяет его наличие.
      */
     @Test
     public void whenAddCommentForItemThenGetComment() {

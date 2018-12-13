@@ -1,4 +1,4 @@
-package ru.kbond.trackerjdbc.start;
+package ru.kbond.trackerjdbc.exception;
 
 /**
  * Class MenuOutException - используется для генерации ошибки
