@@ -1,1 +1,1 @@
-CREATE DATABASE tracker;
+CREATE DATABASE tracker_test;
