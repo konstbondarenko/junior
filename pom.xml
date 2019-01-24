@@ -16,7 +16,8 @@
         <module>chapter_002</module>
         <module>chapter_003</module>
         <module>chapter_004</module>
-	</modules>
+        <module>cameltask</module>
+    </modules>
 	
 	<dependencies>
         <dependency>
@@ -106,7 +107,6 @@
 
         <profile>
             <id>production</id>
-
             <properties>
                 <db.url>jdbc:postgresql://localhost/tracker</db.url>
                 <db.username>postgres</db.username>
