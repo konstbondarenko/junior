@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
  * @since 24.01.2019
  */
 public class CopyFilesRoute extends RouteBuilder {
-    private Logger LOG = Logger.getLogger(CopyFilesRoute.class);
+    private Logger logger = Logger.getLogger(CopyFilesRoute.class);
     private String from;
     private String to;
 
@@ -27,12 +27,12 @@ public class CopyFilesRoute extends RouteBuilder {
         from("file:" + this.from)
                 .process(e -> {
                     String fileName = (String) e.getIn().getHeader(Exchange.FILE_NAME);
-                    LOG.info("received file " + fileName + " from " + this.from);
+                    logger.info("received file " + fileName + " from " + this.from);
                 })
                 .to("file:" + this.to)
                 .process(e -> {
                     String fileName = (String) e.getIn().getHeader(Exchange.FILE_NAME);
-                    LOG.info("file " + fileName + " sent to " + this.to);
+                    logger.info("file " + fileName + " sent to " + this.to);
                 });
     }
 }

@@ -28,7 +28,7 @@ public class FileWriter implements EventListener {
             fr.write(sb.toString());
         } catch (IOException e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             try {
                 if (fr != null) {
                     fr.close();
