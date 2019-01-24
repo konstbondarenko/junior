@@ -2,6 +2,7 @@ package ru.kbond.observer;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import ru.kbond.observer.listener.ConsoleWriter;
 import ru.kbond.observer.listener.FileWriter;
@@ -35,6 +36,7 @@ public class EventManagerTest {
     /**
      * Тест производит проверку слушателя "ConsoleWriter".
      */
+    @Ignore
     @Test
     public void consoleLog() {
         Logger logger = new Logger();
@@ -48,6 +50,7 @@ public class EventManagerTest {
     /**
      * Тест производит проверку слушателя "FileWriter".
      */
+    @Ignore
     @Test
     public void fileWriter() throws IOException {
         File destOut = File.createTempFile("log", ".txt");
